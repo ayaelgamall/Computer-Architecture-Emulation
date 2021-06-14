@@ -26,7 +26,7 @@ public class HagaSa23aMIPS {
         Instruction toMemory = null;
         Instruction toWB = null;
 
-        for (int cycle=0 ;cycle<programLength ; cycle++)
+        for (int cycle=0 ;PC<Math.min(programLength,1024) ; cycle++)
         {
             writeBack(toWB);
             memory(toMemory);
