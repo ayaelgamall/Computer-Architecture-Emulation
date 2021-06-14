@@ -11,7 +11,6 @@ public class HagaSa23aMIPS {
         Assembler();
         runProgram();
     }
-
     private static void Assembler() {
         //todo read file
         Memory=new int[2048];
@@ -21,21 +20,31 @@ public class HagaSa23aMIPS {
     }
 
     private static void runProgram() {
-         int instruction =-1;
-         Instruction toBeExcuted=null;
-         Instruction toBeDecoded=null;
-         Instruction toMemory = null;
-         Instruction toWB = null;
+        int instruction =-1;
+        Instruction toBeExcuted=null;
+        Instruction toBeDecoded=null;
+        Instruction toMemory = null;
+        Instruction toWB = null;
 
-        for (int cycle=0 ; ; cycle++)
+        for (int cycle=0 ;cycle<programLength ; cycle++)
         {
             writeBack(toWB);
             memory(toMemory);
             toWB=toMemory;
-           if( excute) execute1(toBeExcuted);
-           else{ execute2(toBeExcuted);toMemory=toBeExcuted;}
-           if( decode) toBeDecoded=decode1(instruction);
-           else{ decode2(toBeDecoded);toBeExcuted=toBeDecoded;}
+            if( excute) execute1(toBeExcuted);
+            else{
+                boolean Jump=execute2(toBeExcuted);
+                if(Jump){
+                    toBeExcuted=null;
+                    toBeDecoded=null;
+                    toMemory = null;
+                    toWB = null;
+                    continue;
+                }
+                toMemory=toBeExcuted;
+            }
+            if( decode) toBeDecoded=decode1(instruction);
+            else{ decode2(toBeDecoded);toBeExcuted=toBeDecoded;}
 
             instruction=  fetch();
             if(cycle>6)
@@ -43,21 +52,15 @@ public class HagaSa23aMIPS {
 
         }
     }
-
     private static void memory(Instruction i) {
 
     }
-
-
     private static void writeBack(Instruction i) {
     }
-
-
-
     public static int ALU(int operandA, int operandB, int operation) {
 
         int output = 0;
-       int zeroFlag = 0;
+        int zeroFlag = 0;
         switch(operation ){
             case 0:output = operandA<<operandB;break;
             case 1:output= operandA & operandB;break;
@@ -79,12 +82,16 @@ public class HagaSa23aMIPS {
 
         return output;
     }
-
-
-    private static void execute2(Instruction i) {
-        if(i.Branch){
-            PC=i.pc+i.immediate*4;
-        }excute=false;
+    private static boolean execute2(Instruction i) {
+        if(i==null){
+            return false;
+        }
+        if(i.Branch && zeroFlag){  //todo jump
+            PC = i.pc + i.regData;
+            return true;
+        }
+        excute=false;
+        return false;
     }
 
     private static void execute1(Instruction instruction) {
@@ -103,7 +110,7 @@ public class HagaSa23aMIPS {
                 break;
             case 6: instruction.regData = Registers[instruction.r2] | instruction.immediate;//OR imm
                 break;
-            case 7: instruction.shiftRes = instruction.address << 2;//Jump
+            case 7: // instruction.shiftRes = instruction.address << 2;//Jump
                 break;
             case 8: instruction.regData = Registers[instruction.r2] << instruction.shamt;//Shift left logical
                 break;
@@ -183,7 +190,6 @@ public class HagaSa23aMIPS {
         int r3;
         int immediate;
         int address;
-        //        int ALUop;
         boolean RegDst;
         boolean ALUSrc ;
         boolean RegWrite;
@@ -191,6 +197,7 @@ public class HagaSa23aMIPS {
         boolean MemWrite;
         boolean Branch ;
         boolean MemtoReg;
+
 
         public Instruction(int opcode, int shamt, int r1, int r2, int r3, int immediate, int address) {
             this.opcode = opcode;
@@ -204,4 +211,3 @@ public class HagaSa23aMIPS {
         }
     }
 }
-
