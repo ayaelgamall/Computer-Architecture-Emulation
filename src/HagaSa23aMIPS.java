@@ -5,6 +5,7 @@ public class HagaSa23aMIPS {
     static final int Zero=0;
     static int programLength;
     static boolean decode=false;
+    static boolean fetch=true;
     static boolean excute=false;
     static boolean zeroFlag;
     public static void main (String[] args){
@@ -35,6 +36,7 @@ public class HagaSa23aMIPS {
             else{
                 boolean Jump=execute2(toBeExcuted);
                 if(Jump){
+                    fetch=true;
                     toBeExcuted=null;
                     toBeDecoded=null;
                     toMemory = null;
@@ -45,17 +47,19 @@ public class HagaSa23aMIPS {
             if( decode) toBeDecoded=decode1(instruction);
             else{ decode2(toBeDecoded);toBeExcuted=toBeDecoded;}
 
-            instruction=  fetch();
+            instruction= fetch?  fetch():-1 ;fetch=!fetch;
 
         }
     }
     private static void memory(Instruction i) {
+        if(i==null)return;
         if(i.MemRead)
             i.valueLW=Memory[i.ALUOutput];
         else if(i.MemWrite)
             Memory[i.ALUOutput]=i.valueR1;
     }
     private static void writeBack(Instruction i) {
+        if(i==null)return;
         if(i.RegWrite){
            Registers[i.r1]=i.MemtoReg? i.valueLW : i.ALUOutput;
         }
