@@ -50,8 +50,10 @@ public class HagaSa23aMIPS {
         }
     }
     private static void memory(Instruction i) {
-
-
+        if(i.MemRead)
+            i.valueLW=Memory[i.ALUOutput];
+        else if(i.MemWrite)
+            Memory[i.ALUOutput]=i.valueR1;
     }
     private static void writeBack(Instruction i) {
     }
@@ -106,7 +108,7 @@ public class HagaSa23aMIPS {
                 break;
             case 3: instruction.ALUOutput = instruction.valueR2 + instruction.immediate;//ADD imm
                 break;
-            case 4: zeroFlag = (0 == (instruction.r2 - instruction.r1));//bne
+            case 4: zeroFlag = (0 == (instruction.valueR2 - instruction.valueR1));//bne
                 break;
             case 5: instruction.ALUOutput = instruction.valueR2 & instruction.immediate;//AND imm
                 break;
@@ -147,15 +149,15 @@ public class HagaSa23aMIPS {
 
     private static Instruction decode1(int instruction) {
         if(instruction==-1)return null;
-        int opcode = 0;  // bits31:28
-        int r1 = 0;      // bits27:23
-        int r2 = 0;      // bit22:18
-        int r3 = 0;      // bits17:13
-        int shamt = 0;   // bits12:0
-        int imm = 0;     // bits17:0
-        int address = 0; // bits27:0
-        int valueR2=0;
-        int valueR3=0;
+        int opcode;  // bits31:28
+        int r1 ;      // bits27:23
+        int r2 ;      // bit22:18
+        int r3 ;      // bits17:13
+        int shamt;   // bits12:0
+        int imm ;     // bits17:0
+        int address; // bits27:0
+        int valueR2;
+        int valueR3;
 
         opcode = instruction & 0b11110000000000000000000000000000 ;
         r1     = instruction & 0b00001111100000000000000000000000 ;
@@ -167,17 +169,19 @@ public class HagaSa23aMIPS {
         int pcBits = PC & 0b11110000000000000000000000000000;
 
         if(opcode<0) opcode= (int) ((2 * (long) Integer.MAX_VALUE + 2 + opcode) >>28);
-        else opcode = opcode >> 28;
+        else opcode = opcode >> 28 ;
 
         r1 = r1 >> 23;
         r2 = r2 >> 18;
         r3 = r3 >> 13;
         address= address | pcBits;
-        valueR2 = Registers[r2]; ;
+
+        int valueR1 = Registers[r1];
+        valueR2 = Registers[r2];
         valueR3 = Registers[r3] ;
 
         decode= false;
-        return new Instruction(opcode,shamt,r1,r2,r3,imm,address,valueR2,valueR3);
+        return new Instruction(opcode,shamt,r1,r2,r3,imm,address,valueR1,valueR2,valueR3);
 
 
     }
@@ -190,13 +194,13 @@ public class HagaSa23aMIPS {
 
 
     static class Instruction{
-        public int ALUOutput;
         int pc=PC;
         int opcode;
         int shamt;
         int r1;
         int r2;
         int r3;
+        int valueR1;
         int valueR2;
         int valueR3;
         int immediate;
@@ -209,9 +213,11 @@ public class HagaSa23aMIPS {
         boolean Branch ;
         boolean MemtoReg;
         boolean Jump;
+        int ALUOutput;
+        int valueLW;
 
 
-        public Instruction( int opcode, int shamt, int r1, int r2, int r3, int immediate, int address ,int valueR2,int valueR3) {
+        public Instruction( int opcode, int shamt, int r1, int r2, int r3, int immediate, int address ,int valueR1,int valueR2,int valueR3) {
             this.opcode = opcode;
             this.shamt = shamt;
             this.r1 = r1;
@@ -220,6 +226,7 @@ public class HagaSa23aMIPS {
             this.immediate = immediate;
             this.address = address;
             this.valueR2=valueR2;
+            this.valueR1=valueR1;
             this.valueR3=valueR3;
 
         }
