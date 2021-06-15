@@ -83,9 +83,13 @@ public class HagaSa23aMIPS {
         if(i==null){
             return false;
         }
-        if(i.Branch && zeroFlag){  //todo jump
+        if(i.Branch && zeroFlag){
             PC = i.pc + i.regData;
             return true;
+        }
+        if (i.Jump){
+            PC = i.address;
+        return true;
         }
         excute=false;
         return false;
@@ -125,14 +129,14 @@ public class HagaSa23aMIPS {
         switch (i.opcode){
             case 0:
             case 1:
-            case 2:
             case 9:
             case 8:i.RegDst =i.RegWrite=true;break;
+            case 2:
             case 3:
             case 5:
             case 6:i.ALUSrc=i.RegWrite=true;break;
-            case 4:i.RegDst=i.RegWrite=i.Branch=true;break;
-            case 7:i.Branch=true;break;
+            case 4:i.Branch=true;break;
+            case 7:i.Jump =true;break;
             case 10:i.ALUSrc=i.RegWrite=i.MemRead=i.MemtoReg=true;break;
             case 11:i.ALUSrc=i.MemWrite=true;break;
         }
@@ -157,6 +161,7 @@ public class HagaSa23aMIPS {
         shamt  = instruction & 0b00000000000000000000111111111111 ;
         imm =    instruction & 0b00000000000000111111111111111111 ;
         address =instruction & 0b00001111111111111111111111111111 ;
+        int pcBits = PC & 0b11110000000000000000000000000000;
 
         if(opcode<0) opcode= (int) ((2 * (long) Integer.MAX_VALUE + 2 + opcode) >>28);
         else opcode = opcode >> 28;
@@ -164,6 +169,7 @@ public class HagaSa23aMIPS {
         r1 = r1 >> 23;
         r2 = r2 >> 18;
         r3 = r3 >> 13;
+        address= address | pcBits;
 
         decode= false;
         return new Instruction(opcode,shamt,r1,r2,r3,imm,address);
@@ -196,6 +202,7 @@ public class HagaSa23aMIPS {
         boolean MemWrite;
         boolean Branch ;
         boolean MemtoReg;
+        boolean Jump;
 
 
         public Instruction(int opcode, int shamt, int r1, int r2, int r3, int immediate, int address) {
