@@ -51,6 +51,7 @@ public class HagaSa23aMIPS {
     }
     private static void memory(Instruction i) {
 
+
     }
     private static void writeBack(Instruction i) {
     }
@@ -84,12 +85,12 @@ public class HagaSa23aMIPS {
             return false;
         }
         if(i.Branch && zeroFlag){
-            PC = i.pc + i.regData;
+            PC = i.pc + i.ALUOutput;
             return true;
         }
         if (i.Jump){
             PC = i.address;
-        return true;
+            return true;
         }
         excute=false;
         return false;
@@ -97,27 +98,27 @@ public class HagaSa23aMIPS {
 
     private static void execute1(Instruction instruction) {
         switch (instruction.opcode) {
-            case 0: instruction.regData = Registers[instruction.r2] + Registers[instruction.r3]; //ADD
+            case 0: instruction.ALUOutput = instruction.valueR2 + instruction.valueR3; //ADD
                 break;
-            case 1: instruction.regData = Registers[instruction.r2] - Registers[instruction.r3]; //SUB
+            case 1: instruction.ALUOutput = instruction.valueR2 - instruction.valueR3; //SUB
                 break;
-            case 2: instruction.regData = Registers[instruction.r2] * instruction.immediate;//MULT imm
+            case 2: instruction.ALUOutput = instruction.valueR2 * instruction.immediate;//MULT imm
                 break;
-            case 3: instruction.regData = Registers[instruction.r2] + instruction.immediate;//ADD imm
+            case 3: instruction.ALUOutput = instruction.valueR2 + instruction.immediate;//ADD imm
                 break;
             case 4: zeroFlag = (0 == (instruction.r2 - instruction.r1));//bne
                 break;
-            case 5: instruction.regData = Registers[instruction.r2] & instruction.immediate;//AND imm
+            case 5: instruction.ALUOutput = instruction.valueR2 & instruction.immediate;//AND imm
                 break;
-            case 6: instruction.regData = Registers[instruction.r2] | instruction.immediate;//OR imm
+            case 6: instruction.ALUOutput = instruction.valueR2 | instruction.immediate;//OR imm
                 break;
             case 7: // instruction.shiftRes = instruction.address << 2;//Jump
                 break;
-            case 8: instruction.regData = Registers[instruction.r2] << instruction.shamt;//Shift left logical
+            case 8: instruction.ALUOutput = instruction.valueR2 << instruction.shamt;//Shift left logical
                 break;
-            case 9: instruction.regData = Registers[instruction.r2] >> instruction.shamt;//shift right logical
+            case 9: instruction.ALUOutput = instruction.valueR2 >> instruction.shamt;//shift right logical
                 break;
-            case 10: case 11:instruction.shiftRes = instruction.r2+instruction.immediate;//Load/store word
+            case 10: case 11:instruction.ALUOutput = instruction.r2+instruction.immediate;//Load/store word
                 break;
             default:
 
@@ -153,6 +154,8 @@ public class HagaSa23aMIPS {
         int shamt = 0;   // bits12:0
         int imm = 0;     // bits17:0
         int address = 0; // bits27:0
+        int valueR2=0;
+        int valueR3=0;
 
         opcode = instruction & 0b11110000000000000000000000000000 ;
         r1     = instruction & 0b00001111100000000000000000000000 ;
@@ -170,9 +173,11 @@ public class HagaSa23aMIPS {
         r2 = r2 >> 18;
         r3 = r3 >> 13;
         address= address | pcBits;
+        valueR2 = Registers[r2]; ;
+        valueR3 = Registers[r3] ;
 
         decode= false;
-        return new Instruction(opcode,shamt,r1,r2,r3,imm,address);
+        return new Instruction(opcode,shamt,r1,r2,r3,imm,address,valueR2,valueR3);
 
 
     }
@@ -185,14 +190,15 @@ public class HagaSa23aMIPS {
 
 
     static class Instruction{
-        public int regData;
-        public int shiftRes;
+        public int ALUOutput;
         int pc=PC;
         int opcode;
         int shamt;
         int r1;
         int r2;
         int r3;
+        int valueR2;
+        int valueR3;
         int immediate;
         int address;
         boolean RegDst;
@@ -205,7 +211,7 @@ public class HagaSa23aMIPS {
         boolean Jump;
 
 
-        public Instruction(int opcode, int shamt, int r1, int r2, int r3, int immediate, int address) {
+        public Instruction( int opcode, int shamt, int r1, int r2, int r3, int immediate, int address ,int valueR2,int valueR3) {
             this.opcode = opcode;
             this.shamt = shamt;
             this.r1 = r1;
@@ -213,6 +219,8 @@ public class HagaSa23aMIPS {
             this.r3 = r3;
             this.immediate = immediate;
             this.address = address;
+            this.valueR2=valueR2;
+            this.valueR3=valueR3;
 
         }
     }
