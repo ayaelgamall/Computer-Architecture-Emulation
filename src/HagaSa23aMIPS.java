@@ -150,7 +150,7 @@ public class HagaSa23aMIPS {
         int imm = 0;     // bits17:0
         int address = 0; // bits27:0
 
-        opcode = instruction & 0b11110000000000000000000000000000 ;//todo not negative
+        opcode = instruction & 0b11110000000000000000000000000000 ;
         r1     = instruction & 0b00001111100000000000000000000000 ;
         r2     = instruction & 0b00000000011111000000000000000000 ;
         r3     = instruction & 0b00000000000000111110000000000000 ;
@@ -158,7 +158,9 @@ public class HagaSa23aMIPS {
         imm =    instruction & 0b00000000000000111111111111111111 ;
         address =instruction & 0b00001111111111111111111111111111 ;
 
-        opcode = opcode >> 28;
+        if(opcode<0) opcode= (int) ((2 * (long) Integer.MAX_VALUE + 2 + opcode) >>28);
+        else opcode = opcode >> 28;
+
         r1 = r1 >> 23;
         r2 = r2 >> 18;
         r3 = r3 >> 13;
