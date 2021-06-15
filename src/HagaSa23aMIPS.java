@@ -46,8 +46,6 @@ public class HagaSa23aMIPS {
             else{ decode2(toBeDecoded);toBeExcuted=toBeDecoded;}
 
             instruction=  fetch();
-            if(cycle>6)
-                break;
 
         }
     }
