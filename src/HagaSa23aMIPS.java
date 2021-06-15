@@ -56,6 +56,10 @@ public class HagaSa23aMIPS {
             Memory[i.ALUOutput]=i.valueR1;
     }
     private static void writeBack(Instruction i) {
+        if(i.RegWrite){
+           Registers[i.r1]=i.MemtoReg? i.valueLW : i.ALUOutput;
+        }
+
     }
     public static int ALU(int operandA, int operandB, int operation) {
 
@@ -205,7 +209,7 @@ public class HagaSa23aMIPS {
         int valueR3;
         int immediate;
         int address;
-        boolean RegDst;
+        boolean RegDst; //todo not used I think in our architecture delete it
         boolean ALUSrc ;
         boolean RegWrite;
         boolean MemRead;
