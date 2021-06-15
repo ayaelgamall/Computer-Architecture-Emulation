@@ -38,7 +38,6 @@ public class HagaSa23aMIPS {
                     toBeExcuted=null;
                     toBeDecoded=null;
                     toMemory = null;
-                    toWB = null;
                     continue;
                 }
                 toMemory=toBeExcuted;
