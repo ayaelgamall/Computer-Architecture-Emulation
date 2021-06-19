@@ -17,7 +17,7 @@ public class HagaSa23aMIPS {
         runProgram();
     }
      private static void Assembler() {
-        int [] memory = new int[1024];
+        Memory = new int[1024];
         int programLength=0;
         Registers=new int[32];
         PC=0;//??
@@ -29,7 +29,7 @@ public class HagaSa23aMIPS {
             while ((line = reader.readLine()) != null) {
                 stringBuilder.append(line);
                 if (!(line.equals(""))) {
-                    memory[programLength++]=(int)Long.parseLong(getBinary(line.split(" ")),2);
+                    Memory[programLength++]=(int)Long.parseLong(getBinary(line.split(" ")),2);
                 }
         }
             reader.close();
