@@ -1,3 +1,7 @@
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 public class HagaSa23aMIPS {
     static int[] Memory;
     static int[] Registers;
@@ -12,14 +16,79 @@ public class HagaSa23aMIPS {
         Assembler();
         runProgram();
     }
-    private static void Assembler() {
-        //todo read file
-        Memory=new int[2048];
+     private static void Assembler() {
+        int [] memory = new int[1024];
+        int programLength=0;
         Registers=new int[32];
         PC=0;//??
-        programLength=0;//??
+        String fileName = "src/" + "FileName"+".txt";
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(fileName));
+            StringBuilder stringBuilder = new StringBuilder();
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                stringBuilder.append(line);
+                if (!(line.equals(""))) {
+                    memory[programLength++]=(int)Long.parseLong(getBinary(line.split(" ")),2);
+                }
+        }
+            reader.close();
+        }
+        catch(IOException e) {
+            System.out.println("FILE NOT FOUND");
+        }
     }
-
+    private static String getBinary(String [] x) {
+        StringBuilder output = new StringBuilder();
+        boolean immediate=false;
+        boolean sll=false;
+        boolean mem=false;
+        int r;
+        switch(x[0].toUpperCase()) {
+            case "ADD" : output.append("0000"); break ;
+            case "SUB" : output.append("0001"); break ;
+            case "MULI" : output.append("0010"); immediate=true; break ;
+            case "ADDI" : output.append("0011"); immediate=true;break ;
+            case "BNE" : output.append("0100"); immediate=true;break ;
+            case "ANDI" : output.append("0101");immediate=true; break ;
+            case "ORI" : output.append("0110"); immediate=true;break ;
+            case "J" : output.append("0111"); output.append(String.format("%28s", Integer.toBinaryString(Integer.parseInt(x[1]))).replaceAll(" ", "0"));return output.toString() ;
+            case "SLL" : output.append("1000"); sll=true; break ;
+            case "SRL" : output.append("1001");sll=true; break ;
+            case "LW" : output.append("1010");mem=true; break ;
+            case "SW" :output.append("1011");mem=true; break ;
+            default: System.out.println("Something went wrong!!"); break;
+        }
+        r=Integer.parseInt(x[1].substring(1,x[1].length()));
+        output.append(String.format("%5s", Integer.toBinaryString(r)).replaceAll(" ", "0"));
+        if (mem) {
+            String imm="";
+            for (int i =0;i<x[2].length();i++) {
+                if(("(").equals(x[2].charAt(i)+"")) {
+                    output.append(String.format("%5s", Integer.toBinaryString(Integer.parseInt(x[2].substring(i+2,x[2].length()-1)))).replaceAll(" ", "0"));
+                    output.append(String.format("%18s", Integer.toBinaryString(Integer.parseInt(imm))).replaceAll(" ", "0"));
+                    return output.toString();
+                }
+                imm+=x[2].charAt(i)+"";
+            }}
+        r=Integer.parseInt(x[2].substring(1,x[2].length()));
+        output.append(String.format("%5s", Integer.toBinaryString(r)).replaceAll(" ", "0"));
+        if (immediate) {
+            output.append(String.format("%18s", Integer.toBinaryString(Integer.parseInt(x[3]))).replaceAll(" ", "0"));
+            return output.toString();
+        }
+        else {
+            if (sll) {
+                output.append("00000");
+                output.append(String.format("%13s", Integer.toBinaryString(Integer.parseInt(x[3]))).replaceAll(" ", "0"));
+                return output.toString();
+            }
+            r=Integer.parseInt(x[3].substring(1,x[3].length()));
+            output.append(String.format("%5s", Integer.toBinaryString(r)).replaceAll(" ", "0"));
+            output.append("0000000000000");
+            return output.toString();
+        }
+    }
     private static void runProgram() {
         int instruction =-1;
         Instruction toBeExcuted=null;
