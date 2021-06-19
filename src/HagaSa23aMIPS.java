@@ -13,15 +13,15 @@ public class HagaSa23aMIPS {
     static boolean excute=false;
     static boolean zeroFlag;
     public static void main (String[] args){
-        Assembler();
+        Assembler("program1");
         runProgram();
     }
-     private static void Assembler() {
+     private static void Assembler(String Name) {
         Memory = new int[1024];
         int programLength=0;
         Registers=new int[32];
         PC=0;//??
-        String fileName = "src/" + "FileName"+".txt";
+        String fileName = "src/" + Name+".txt";
         try {
             BufferedReader reader = new BufferedReader(new FileReader(fileName));
             StringBuilder stringBuilder = new StringBuilder();
