@@ -137,19 +137,26 @@ public class HagaSa23aMIPS {
 
     private static void memory(Instruction i) {
         if(i==null)return;
+        System.out.println("At Memory Stage : Instruction "+i.pc);
+        System.out.println("   Inputs: MemRead="+i.MemRead  +" ,Data From ALU= " +i.ALUOutput + "Write Data ="+ i.valueR1 );
+
         if(i.MemRead)
             i.valueLW=Memory[i.ALUOutput];
-        else if(i.MemWrite)
+
+        else if(i.MemWrite){
+            System.out.println("    Memory index " +i.ALUOutput+ " has changed from : "+Memory[i.ALUOutput]);
             Memory[i.ALUOutput]=i.valueR1;
+            System.out.println("    to : "+Memory[i.ALUOutput]);
+        }
     }
     private static boolean writeBack(Instruction i) {
         if(i==null) return false;
         System.out.println("At Execute Stage : Instruction "+i.pc);
         System.out.println("   Inputs: RegWrite="+i.RegWrite + " , MemToReg="+i.MemtoReg+" , DataFromMemory ="+i.valueLW +" ,Data From ALU= " +i.ALUOutput + "WriteReg ="+ i.r1 +"\n" );
         if(i.RegWrite){
-            System.out.println("Register R" +i.r1+ " has changed from : "+Registers[i.r1]);
+            System.out.println("    Register R" +i.r1+ " has changed from : "+Registers[i.r1]);
             Registers[i.r1]=i.MemtoReg? i.valueLW : i.ALUOutput;
-            System.out.println("to : "+Registers[i.r1]);
+            System.out.println("    to : "+Registers[i.r1]);
 
         }
 
