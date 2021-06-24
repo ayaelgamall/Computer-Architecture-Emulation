@@ -2,11 +2,13 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
+
 public class HagaSa23aMIPS {
     static int[] Memory;
     static int[] Registers;
     static int PC;
-    static final int Zero=0;
+    static final int R0=0;
     static int programLength;
     static boolean decode=false;
     static boolean fetch=true;
@@ -108,7 +110,7 @@ public class HagaSa23aMIPS {
                     fetch=true;
                     toBeExcuted=null;
                     toBeDecoded=null;
-                    toMemory = null;
+                    toMemory = toBeExcuted;
                     continue;
                 }
                 toMemory=toBeExcuted;
@@ -119,7 +121,18 @@ public class HagaSa23aMIPS {
             instruction= fetch?  fetch():-1 ;fetch=!fetch;
 
         }
+        System.out.println("The Registers Content is :" +printReg());
+        System.out.println("The Memory Content is :"+ Arrays.toString(Memory));
     }
+
+    private static String printReg() {
+        StringBuilder s = new StringBuilder("R0=" + R0);
+        for (int i = 1; i < Registers.length; i++)
+            s.append(" , R").append(i).append("=").append(Registers[i]);
+        s.append(" , PC=" );s.append(PC);
+        return s.toString();
+    }
+
     private static void memory(Instruction i) {
         if(i==null)return;
         if(i.MemRead)
@@ -133,31 +146,6 @@ public class HagaSa23aMIPS {
            Registers[i.r1]=i.MemtoReg? i.valueLW : i.ALUOutput;
         }
 
-    }
-    public static int ALU(int operandA, int operandB, int operation) {
-
-        int output = 0;
-        int zeroFlag = 0;
-        switch(operation ){
-            case 0:output = operandA<<operandB;break;
-            case 1:output= operandA & operandB;break;
-            case 2:output=operandA+operandB;break;
-            case 3:output=operandA*operandB;break;
-            case 4:output=operandA>operandB?1:0;break;
-            case 5:output= ~(operandA & operandB);break;
-            case 6:output=operandA-operandB;break;
-            default: ;
-        }
-        zeroFlag=output==0?1:0;
-        // Complete the ALU body here...
-
-        System.out.println("Operation = "+operation);
-        System.out.println("First Operand = "+operandA);
-        System.out.println("Second Operand = "+operandB);
-        System.out.println("Result = "+output);
-        System.out.println("Zero Flag = "+zeroFlag);
-
-        return output;
     }
     private static boolean execute2(Instruction i) {
         if(i==null){
