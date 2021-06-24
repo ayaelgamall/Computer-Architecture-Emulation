@@ -19,14 +19,14 @@ public class HagaSa23aMIPS {
         runProgram();
     }
      private static void Assembler(String Name) {
-        Memory = new int[1024];
+        Memory = new int[2048];
         int programLength=0;
         Registers=new int[32];
         PC=0;//??
         String fileName = "src/" + Name+".txt";
         try {
             BufferedReader reader = new BufferedReader(new FileReader(fileName));
-            StringBuilder stringBuilder = new StringBuilder();
+            StringBuilder stringBuilder = new StringBuilder();//not needed ??
             String line = null;
             while ((line = reader.readLine()) != null) {
                 stringBuilder.append(line);
@@ -97,10 +97,11 @@ public class HagaSa23aMIPS {
         Instruction toBeDecoded=null;
         Instruction toMemory = null;
         Instruction toWB = null;
-
-        for (int cycle=0 ;PC<Math.min(programLength,1024) ; cycle++)
+        int limit = 7+ (programLength-1)*2;
+        for (int cycle=1 ;cycle<limit; cycle++)
         {
-            writeBack(toWB);
+            System.out.println("Clock Cycle : "+cycle);
+            if(  writeBack(toWB))break;
             memory(toMemory);
             toWB=toMemory;
             if( excute) execute1(toBeExcuted);
@@ -121,6 +122,7 @@ public class HagaSa23aMIPS {
             instruction= fetch?  fetch():-1 ;fetch=!fetch;
 
         }
+        System.out.println("The Stages are finished");
         System.out.println("The Registers Content is :" +printReg());
         System.out.println("The Memory Content is :"+ Arrays.toString(Memory));
     }
@@ -140,12 +142,17 @@ public class HagaSa23aMIPS {
         else if(i.MemWrite)
             Memory[i.ALUOutput]=i.valueR1;
     }
-    private static void writeBack(Instruction i) {
-        if(i==null)return;
+    private static boolean writeBack(Instruction i) {
+        if(i==null) return false;
         if(i.RegWrite){
            Registers[i.r1]=i.MemtoReg? i.valueLW : i.ALUOutput;
         }
+        System.out.println("At Execute Stage : Instruction "+i.pc);
+        System.out.println("   Inputs: RegWrite="+i.RegWrite + " , MemToReg="+i.MemtoReg+" , DataFromMemory ="+i.valueLW +" ,Data From ALU= " +i.ALUOutput + "WriteReg ="+ i.r1 +"\n" );
 
+        if(i.pc==programLength)return true;
+
+        return false;
     }
     private static boolean execute2(Instruction i) {
         if(i==null){
@@ -252,8 +259,10 @@ public class HagaSa23aMIPS {
     }
 
     private static int fetch() {
+        if(PC==programLength)return -1;
         int res = Memory[PC];
         PC++;
+        System.out.println();
         return res;
     }
 
