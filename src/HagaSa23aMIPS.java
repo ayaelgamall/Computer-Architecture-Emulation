@@ -144,11 +144,14 @@ public class HagaSa23aMIPS {
     }
     private static boolean writeBack(Instruction i) {
         if(i==null) return false;
-        if(i.RegWrite){
-           Registers[i.r1]=i.MemtoReg? i.valueLW : i.ALUOutput;
-        }
         System.out.println("At Execute Stage : Instruction "+i.pc);
         System.out.println("   Inputs: RegWrite="+i.RegWrite + " , MemToReg="+i.MemtoReg+" , DataFromMemory ="+i.valueLW +" ,Data From ALU= " +i.ALUOutput + "WriteReg ="+ i.r1 +"\n" );
+        if(i.RegWrite){
+            System.out.println("Register R" +i.r1+ " has changed from : "+Registers[i.r1]);
+            Registers[i.r1]=i.MemtoReg? i.valueLW : i.ALUOutput;
+            System.out.println("to : "+Registers[i.r1]);
+
+        }
 
         if(i.pc==programLength)return true;
 
