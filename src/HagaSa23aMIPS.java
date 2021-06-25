@@ -19,7 +19,7 @@ public class HagaSa23aMIPS {
         runProgram();
     }
     private static void Assembler(String Name) {
-        Memory = new int[1024];
+        Memory = new int[2048];
         Registers=new int[32];
         PC=0;//??
         String fileName = "src/" + Name+".txt";
@@ -239,9 +239,9 @@ public class HagaSa23aMIPS {
             case 10: case 11:instruction.ALUOutput = instruction.r2+instruction.immediate;//Load/store word
                 break;
             default:
-            execute=false;
-        }
 
+        }
+        execute=false;
     }
 
     private static void decode2(Instruction i) {
