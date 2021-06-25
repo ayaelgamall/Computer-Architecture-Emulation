@@ -167,7 +167,7 @@ public class HagaSa23aMIPS {
     }
     private static boolean writeBack(Instruction i) {
         if(i==null) return false;
-        pw.println("At Write Back Stage : Instruction "+i.pc);
+        pw.println("At Write Back Stage : Instruction "+i.pc +i.binary);
         pw.println("   Inputs: RegWrite="+i.RegWrite + " , MemToReg="+i.MemtoReg+" , DataFromMemory ="+i.valueLW +" ,Data From ALU= " +i.ALUOutput + " ,WriteReg ="+ i.r1  );
 
         if(i.RegWrite){
@@ -188,7 +188,7 @@ public class HagaSa23aMIPS {
             return false;
         }
         execute =true;
-        pw.println("At Execute Stage : Instruction "+i.pc);
+        pw.println("At Execute Stage : Instruction "+i.pc +i.binary);
         pw.println("   Inputs: Branch="+i.Branch + " , Zero Flag="+ zeroFlag +" , Jump ="+i.Jump+", PC ="+PC+", ALU output="+i.ALUOutput );
 
         if(i.Branch && !zeroFlag){
@@ -212,7 +212,7 @@ public class HagaSa23aMIPS {
 
     private static void execute1(Instruction i) {
         if(i==null)return;
-        pw.println("At Execute Stage : Instruction "+i.pc);
+        pw.println("At Execute Stage : Instruction "+i.pc+i.binary);
         pw.print("   Inputs: ALUControl="+i.opcode+" , ALUSrc="+i.ALUSrc+
                 ", Read data 1="+i.valueR2+((!i.ALUSrc)?(" , Read data 2="+i.valueR3):(" , immediate value="+i.immediate)));
 
@@ -251,7 +251,7 @@ public class HagaSa23aMIPS {
 
     private static void decode2(Instruction i) {
         if(i==null)return;
-        pw.println("At Decode Stage : Instruction "+i.pc);
+        pw.println("At Decode Stage : Instruction "+i.pc+i.binary);
         pw.println("   Inputs: Opcode="+i.opcode);
 
         switch (i.opcode){
@@ -295,7 +295,7 @@ public class HagaSa23aMIPS {
         int address; // bits27:0
         int valueR2;
         int valueR3;
-        pw.println("At Decode Stage : Instruction "+PC);
+        pw.println("At Decode Stage : Instruction "+PC+" ( "+Integer.toBinaryString(i)+" )");
         pw.println("   Input: Instruction="+Integer.toBinaryString(i));
 
         opcode = i & 0b11110000000000000000000000000000 ;
@@ -328,7 +328,7 @@ public class HagaSa23aMIPS {
         valueR3 = Registers[r3] ;
 
         decode= false;
-        Instruction inst = new Instruction(opcode,shamt,r1,r2,r3,imm,address,valueR1,valueR2,valueR3);
+        Instruction inst = new Instruction(opcode,shamt,r1,r2,r3,imm,address,valueR1,valueR2,valueR3," ( "+Integer.toBinaryString(i)+" )");
         pw.print("   Outputs: Opcode="+inst.opcode);
         pw.print(", shift amount="+inst.opcode);
         pw.print(", Opcode="+inst.shamt);
@@ -347,13 +347,14 @@ public class HagaSa23aMIPS {
         if(PC==programLength)return -1;
         int res = Memory[PC];
         PC++;
-        pw.println( "At Fetch Stage : Instruction "+ PC);
+        pw.println( "At Fetch Stage : Instruction "+ PC + " ( "+Integer.toBinaryString(res)+" )");
         pw.println("   PC is incremented to "+PC);
         pw.println("   Output : "+ Integer.toBinaryString(res) +"\n");
         return res;
     }
 
     static class Instruction{
+        String binary;
         int pc=PC;
         int opcode;
         int shamt;
@@ -376,7 +377,7 @@ public class HagaSa23aMIPS {
         int ALUOutput;
         int valueLW;
 
-        public Instruction( int opcode, int shamt, int r1, int r2, int r3, int immediate, int address ,int valueR1,int valueR2,int valueR3) {
+        public Instruction(int opcode, int shamt, int r1, int r2, int r3, int immediate, int address, int valueR1, int valueR2, int valueR3, String s) {
             this.opcode = opcode;
             this.shamt = shamt;
             this.r1 = r1;
@@ -387,6 +388,7 @@ public class HagaSa23aMIPS {
             this.valueR2=valueR2;
             this.valueR1=valueR1;
             this.valueR3=valueR3;
+            this.binary=s;
 
         }
     }

@@ -1,46 +1,46 @@
 Clock Cycle : 1
 
-At Fetch Stage : Instruction 1
+At Fetch Stage : Instruction 1 ( 110000100000000000000000000110 )
    PC is incremented to 1
    Output : 110000100000000000000000000110
 
 ________________________________________________
 Clock Cycle : 2
 
-At Decode Stage : Instruction 1
+At Decode Stage : Instruction 1 ( 110000100000000000000000000110 )
    Input: Instruction=110000100000000000000000000110
    Outputs: Opcode=3, shift amount=3, Opcode=6, Read Register 1=1, Read Register 2=0, Register 3=0, Immediate Value=6, Address=8388614
 ________________________________________________
 Clock Cycle : 3
 
-At Decode Stage : Instruction 1
+At Decode Stage : Instruction 1 ( 110000100000000000000000000110 )
    Inputs: Opcode=3
    Outputs: , Jump=false, Branch=false, MemRead=false, MemtoReg=false, ALUControl=3, MemWrite=false, ALUSrc=true, RegWrite=true
 
-At Fetch Stage : Instruction 2
+At Fetch Stage : Instruction 2 ( 110001000000000000000000000101 )
    PC is incremented to 2
    Output : 110001000000000000000000000101
 
 ________________________________________________
 Clock Cycle : 4
 
-At Execute Stage : Instruction 1
+At Execute Stage : Instruction 1 ( 110000100000000000000000000110 )
    Inputs: ALUControl=3 , ALUSrc=true, Read data 1=0 , immediate value=6   Outputs: 6, Zero Flag=false
 
-At Decode Stage : Instruction 2
+At Decode Stage : Instruction 2 ( 110001000000000000000000000101 )
    Input: Instruction=110001000000000000000000000101
    Outputs: Opcode=3, shift amount=3, Opcode=5, Read Register 1=2, Read Register 2=0, Register 3=0, Immediate Value=5, Address=16777221
 ________________________________________________
 Clock Cycle : 5
 
-At Execute Stage : Instruction 1
+At Execute Stage : Instruction 1 ( 110000100000000000000000000110 )
    Inputs: Branch=false , Zero Flag=false , Jump =false, PC =2, ALU output=6
 
-At Decode Stage : Instruction 2
+At Decode Stage : Instruction 2 ( 110001000000000000000000000101 )
    Inputs: Opcode=3
    Outputs: , Jump=false, Branch=false, MemRead=false, MemtoReg=false, ALUControl=3, MemWrite=false, ALUSrc=true, RegWrite=true
 
-At Fetch Stage : Instruction 3
+At Fetch Stage : Instruction 3 ( 110010000000000000000000000111 )
    PC is incremented to 3
    Output : 110010000000000000000000000111
 
@@ -50,27 +50,27 @@ Clock Cycle : 6
 At Memory Stage : Instruction 1
    Inputs: MemRead=false ,MemWrite=false ,Data From ALU= 6 ,Write Data =0
 
-At Execute Stage : Instruction 2
+At Execute Stage : Instruction 2 ( 110001000000000000000000000101 )
    Inputs: ALUControl=3 , ALUSrc=true, Read data 1=0 , immediate value=5   Outputs: 5, Zero Flag=false
 
-At Decode Stage : Instruction 3
+At Decode Stage : Instruction 3 ( 110010000000000000000000000111 )
    Input: Instruction=110010000000000000000000000111
    Outputs: Opcode=3, shift amount=3, Opcode=7, Read Register 1=4, Read Register 2=0, Register 3=0, Immediate Value=7, Address=33554439
 ________________________________________________
 Clock Cycle : 7
 
-At Write Back Stage : Instruction 1
+At Write Back Stage : Instruction 1 ( 110000100000000000000000000110 )
    Inputs: RegWrite=true , MemToReg=false , DataFromMemory =0 ,Data From ALU= 6 ,WriteReg =1
     Register R1 has changed from : 0 to : 6
 
-At Execute Stage : Instruction 2
+At Execute Stage : Instruction 2 ( 110001000000000000000000000101 )
    Inputs: Branch=false , Zero Flag=false , Jump =false, PC =3, ALU output=5
 
-At Decode Stage : Instruction 3
+At Decode Stage : Instruction 3 ( 110010000000000000000000000111 )
    Inputs: Opcode=3
    Outputs: , Jump=false, Branch=false, MemRead=false, MemtoReg=false, ALUControl=3, MemWrite=false, ALUSrc=true, RegWrite=true
 
-At Fetch Stage : Instruction 4
+At Fetch Stage : Instruction 4 ( 110010100000000000000000000010 )
    PC is incremented to 4
    Output : 110010100000000000000000000010
 
@@ -80,27 +80,27 @@ Clock Cycle : 8
 At Memory Stage : Instruction 2
    Inputs: MemRead=false ,MemWrite=false ,Data From ALU= 5 ,Write Data =0
 
-At Execute Stage : Instruction 3
+At Execute Stage : Instruction 3 ( 110010000000000000000000000111 )
    Inputs: ALUControl=3 , ALUSrc=true, Read data 1=0 , immediate value=7   Outputs: 7, Zero Flag=false
 
-At Decode Stage : Instruction 4
+At Decode Stage : Instruction 4 ( 110010100000000000000000000010 )
    Input: Instruction=110010100000000000000000000010
    Outputs: Opcode=3, shift amount=3, Opcode=2, Read Register 1=5, Read Register 2=0, Register 3=0, Immediate Value=2, Address=41943042
 ________________________________________________
 Clock Cycle : 9
 
-At Write Back Stage : Instruction 2
+At Write Back Stage : Instruction 2 ( 110001000000000000000000000101 )
    Inputs: RegWrite=true , MemToReg=false , DataFromMemory =0 ,Data From ALU= 5 ,WriteReg =2
     Register R2 has changed from : 0 to : 5
 
-At Execute Stage : Instruction 3
+At Execute Stage : Instruction 3 ( 110010000000000000000000000111 )
    Inputs: Branch=false , Zero Flag=false , Jump =false, PC =4, ALU output=7
 
-At Decode Stage : Instruction 4
+At Decode Stage : Instruction 4 ( 110010100000000000000000000010 )
    Inputs: Opcode=3
    Outputs: , Jump=false, Branch=false, MemRead=false, MemtoReg=false, ALUControl=3, MemWrite=false, ALUSrc=true, RegWrite=true
 
-At Fetch Stage : Instruction 5
+At Fetch Stage : Instruction 5 ( 10011000001000100000000000000 )
    PC is incremented to 5
    Output : 10011000001000100000000000000
 
@@ -110,27 +110,27 @@ Clock Cycle : 10
 At Memory Stage : Instruction 3
    Inputs: MemRead=false ,MemWrite=false ,Data From ALU= 7 ,Write Data =0
 
-At Execute Stage : Instruction 4
+At Execute Stage : Instruction 4 ( 110010100000000000000000000010 )
    Inputs: ALUControl=3 , ALUSrc=true, Read data 1=0 , immediate value=2   Outputs: 2, Zero Flag=false
 
-At Decode Stage : Instruction 5
+At Decode Stage : Instruction 5 ( 10011000001000100000000000000 )
    Input: Instruction=10011000001000100000000000000
    Outputs: Opcode=1, shift amount=1, Opcode=0, Read Register 1=6, Read Register 2=1, Register 3=2, Immediate Value=16384, Address=50610176
 ________________________________________________
 Clock Cycle : 11
 
-At Write Back Stage : Instruction 3
+At Write Back Stage : Instruction 3 ( 110010000000000000000000000111 )
    Inputs: RegWrite=true , MemToReg=false , DataFromMemory =0 ,Data From ALU= 7 ,WriteReg =4
     Register R4 has changed from : 0 to : 7
 
-At Execute Stage : Instruction 4
+At Execute Stage : Instruction 4 ( 110010100000000000000000000010 )
    Inputs: Branch=false , Zero Flag=false , Jump =false, PC =5, ALU output=2
 
-At Decode Stage : Instruction 5
+At Decode Stage : Instruction 5 ( 10011000001000100000000000000 )
    Inputs: Opcode=1
    Outputs: , Jump=false, Branch=false, MemRead=false, MemtoReg=false, ALUControl=1, MemWrite=false, ALUSrc=false, RegWrite=true
 
-At Fetch Stage : Instruction 6
+At Fetch Stage : Instruction 6 ( 0 )
    PC is incremented to 6
    Output : 0
 
@@ -140,27 +140,27 @@ Clock Cycle : 12
 At Memory Stage : Instruction 4
    Inputs: MemRead=false ,MemWrite=false ,Data From ALU= 2 ,Write Data =0
 
-At Execute Stage : Instruction 5
+At Execute Stage : Instruction 5 ( 10011000001000100000000000000 )
    Inputs: ALUControl=1 , ALUSrc=false, Read data 1=6 , Read data 2=5   Outputs: 1, Zero Flag=false
 
-At Decode Stage : Instruction 6
+At Decode Stage : Instruction 6 ( 0 )
    Input: Instruction=0
    Outputs: Opcode=0, shift amount=0, Opcode=0, Read Register 1=0, Read Register 2=0, Register 3=0, Immediate Value=0, Address=0
 ________________________________________________
 Clock Cycle : 13
 
-At Write Back Stage : Instruction 4
+At Write Back Stage : Instruction 4 ( 110010100000000000000000000010 )
    Inputs: RegWrite=true , MemToReg=false , DataFromMemory =0 ,Data From ALU= 2 ,WriteReg =5
     Register R5 has changed from : 0 to : 2
 
-At Execute Stage : Instruction 5
+At Execute Stage : Instruction 5 ( 10011000001000100000000000000 )
    Inputs: Branch=false , Zero Flag=false , Jump =false, PC =6, ALU output=1
 
-At Decode Stage : Instruction 6
+At Decode Stage : Instruction 6 ( 0 )
    Inputs: Opcode=0
    Outputs: , Jump=false, Branch=false, MemRead=false, MemtoReg=false, ALUControl=0, MemWrite=false, ALUSrc=false, RegWrite=true
 
-At Fetch Stage : Instruction 7
+At Fetch Stage : Instruction 7 ( 10001100100001010000000000000 )
    PC is incremented to 7
    Output : 10001100100001010000000000000
 
@@ -170,27 +170,27 @@ Clock Cycle : 14
 At Memory Stage : Instruction 5
    Inputs: MemRead=false ,MemWrite=false ,Data From ALU= 1 ,Write Data =0
 
-At Execute Stage : Instruction 6
+At Execute Stage : Instruction 6 ( 0 )
    Inputs: ALUControl=0 , ALUSrc=false, Read data 1=0 , Read data 2=0   Outputs: 0, Zero Flag=false
 
-At Decode Stage : Instruction 7
+At Decode Stage : Instruction 7 ( 10001100100001010000000000000 )
    Input: Instruction=10001100100001010000000000000
    Outputs: Opcode=1, shift amount=1, Opcode=0, Read Register 1=3, Read Register 2=4, Register 3=5, Immediate Value=40960, Address=26255360
 ________________________________________________
 Clock Cycle : 15
 
-At Write Back Stage : Instruction 5
+At Write Back Stage : Instruction 5 ( 10011000001000100000000000000 )
    Inputs: RegWrite=true , MemToReg=false , DataFromMemory =0 ,Data From ALU= 1 ,WriteReg =6
     Register R6 has changed from : 0 to : 1
 
-At Execute Stage : Instruction 6
+At Execute Stage : Instruction 6 ( 0 )
    Inputs: Branch=false , Zero Flag=false , Jump =false, PC =7, ALU output=0
 
-At Decode Stage : Instruction 7
+At Decode Stage : Instruction 7 ( 10001100100001010000000000000 )
    Inputs: Opcode=1
    Outputs: , Jump=false, Branch=false, MemRead=false, MemtoReg=false, ALUControl=1, MemWrite=false, ALUSrc=false, RegWrite=true
 
-At Fetch Stage : Instruction 8
+At Fetch Stage : Instruction 8 ( 110100100000000000000000001001 )
    PC is incremented to 8
    Output : 110100100000000000000000001001
 
@@ -200,27 +200,27 @@ Clock Cycle : 16
 At Memory Stage : Instruction 6
    Inputs: MemRead=false ,MemWrite=false ,Data From ALU= 0 ,Write Data =0
 
-At Execute Stage : Instruction 7
+At Execute Stage : Instruction 7 ( 10001100100001010000000000000 )
    Inputs: ALUControl=1 , ALUSrc=false, Read data 1=7 , Read data 2=2   Outputs: 5, Zero Flag=false
 
-At Decode Stage : Instruction 8
+At Decode Stage : Instruction 8 ( 110100100000000000000000001001 )
    Input: Instruction=110100100000000000000000001001
    Outputs: Opcode=3, shift amount=3, Opcode=9, Read Register 1=9, Read Register 2=0, Register 3=0, Immediate Value=9, Address=75497481
 ________________________________________________
 Clock Cycle : 17
 
-At Write Back Stage : Instruction 6
+At Write Back Stage : Instruction 6 ( 0 )
    Inputs: RegWrite=true , MemToReg=false , DataFromMemory =0 ,Data From ALU= 0 ,WriteReg =0
     Register R0 has changed from : 0 to : 0
 
-At Execute Stage : Instruction 7
+At Execute Stage : Instruction 7 ( 10001100100001010000000000000 )
    Inputs: Branch=false , Zero Flag=false , Jump =false, PC =8, ALU output=5
 
-At Decode Stage : Instruction 8
+At Decode Stage : Instruction 8 ( 110100100000000000000000001001 )
    Inputs: Opcode=3
    Outputs: , Jump=false, Branch=false, MemRead=false, MemtoReg=false, ALUControl=3, MemWrite=false, ALUSrc=true, RegWrite=true
 
-At Fetch Stage : Instruction 9
+At Fetch Stage : Instruction 9 ( 110101000000000000000000001010 )
    PC is incremented to 9
    Output : 110101000000000000000000001010
 
@@ -230,27 +230,27 @@ Clock Cycle : 18
 At Memory Stage : Instruction 7
    Inputs: MemRead=false ,MemWrite=false ,Data From ALU= 5 ,Write Data =0
 
-At Execute Stage : Instruction 8
+At Execute Stage : Instruction 8 ( 110100100000000000000000001001 )
    Inputs: ALUControl=3 , ALUSrc=true, Read data 1=0 , immediate value=9   Outputs: 9, Zero Flag=false
 
-At Decode Stage : Instruction 9
+At Decode Stage : Instruction 9 ( 110101000000000000000000001010 )
    Input: Instruction=110101000000000000000000001010
    Outputs: Opcode=3, shift amount=3, Opcode=10, Read Register 1=10, Read Register 2=0, Register 3=0, Immediate Value=10, Address=83886090
 ________________________________________________
 Clock Cycle : 19
 
-At Write Back Stage : Instruction 7
+At Write Back Stage : Instruction 7 ( 10001100100001010000000000000 )
    Inputs: RegWrite=true , MemToReg=false , DataFromMemory =0 ,Data From ALU= 5 ,WriteReg =3
     Register R3 has changed from : 0 to : 5
 
-At Execute Stage : Instruction 8
+At Execute Stage : Instruction 8 ( 110100100000000000000000001001 )
    Inputs: Branch=false , Zero Flag=false , Jump =false, PC =9, ALU output=9
 
-At Decode Stage : Instruction 9
+At Decode Stage : Instruction 9 ( 110101000000000000000000001010 )
    Inputs: Opcode=3
    Outputs: , Jump=false, Branch=false, MemRead=false, MemtoReg=false, ALUControl=3, MemWrite=false, ALUSrc=true, RegWrite=true
 
-At Fetch Stage : Instruction 10
+At Fetch Stage : Instruction 10 ( 100000110000110000000000000 )
    PC is incremented to 10
    Output : 100000110000110000000000000
 
@@ -260,27 +260,27 @@ Clock Cycle : 20
 At Memory Stage : Instruction 8
    Inputs: MemRead=false ,MemWrite=false ,Data From ALU= 9 ,Write Data =0
 
-At Execute Stage : Instruction 9
+At Execute Stage : Instruction 9 ( 110101000000000000000000001010 )
    Inputs: ALUControl=3 , ALUSrc=true, Read data 1=0 , immediate value=10   Outputs: 10, Zero Flag=false
 
-At Decode Stage : Instruction 10
+At Decode Stage : Instruction 10 ( 100000110000110000000000000 )
    Input: Instruction=100000110000110000000000000
    Outputs: Opcode=0, shift amount=0, Opcode=0, Read Register 1=8, Read Register 2=6, Register 3=3, Immediate Value=24576, Address=68706304
 ________________________________________________
 Clock Cycle : 21
 
-At Write Back Stage : Instruction 8
+At Write Back Stage : Instruction 8 ( 110100100000000000000000001001 )
    Inputs: RegWrite=true , MemToReg=false , DataFromMemory =0 ,Data From ALU= 9 ,WriteReg =9
     Register R9 has changed from : 0 to : 9
 
-At Execute Stage : Instruction 9
+At Execute Stage : Instruction 9 ( 110101000000000000000000001010 )
    Inputs: Branch=false , Zero Flag=false , Jump =false, PC =10, ALU output=10
 
-At Decode Stage : Instruction 10
+At Decode Stage : Instruction 10 ( 100000110000110000000000000 )
    Inputs: Opcode=0
    Outputs: , Jump=false, Branch=false, MemRead=false, MemtoReg=false, ALUControl=0, MemWrite=false, ALUSrc=false, RegWrite=true
 
-At Fetch Stage : Instruction 11
+At Fetch Stage : Instruction 11 ( 110101100000111111111111111011 )
    PC is incremented to 11
    Output : 110101100000111111111111111011
 
@@ -290,27 +290,27 @@ Clock Cycle : 22
 At Memory Stage : Instruction 9
    Inputs: MemRead=false ,MemWrite=false ,Data From ALU= 10 ,Write Data =0
 
-At Execute Stage : Instruction 10
+At Execute Stage : Instruction 10 ( 100000110000110000000000000 )
    Inputs: ALUControl=0 , ALUSrc=false, Read data 1=1 , Read data 2=5   Outputs: 6, Zero Flag=false
 
-At Decode Stage : Instruction 11
+At Decode Stage : Instruction 11 ( 110101100000111111111111111011 )
    Input: Instruction=110101100000111111111111111011
    Outputs: Opcode=3, shift amount=3, Opcode=4091, Read Register 1=11, Read Register 2=0, Register 3=31, Immediate Value=-5, Address=92536827
 ________________________________________________
 Clock Cycle : 23
 
-At Write Back Stage : Instruction 9
+At Write Back Stage : Instruction 9 ( 110101000000000000000000001010 )
    Inputs: RegWrite=true , MemToReg=false , DataFromMemory =0 ,Data From ALU= 10 ,WriteReg =10
     Register R10 has changed from : 0 to : 10
 
-At Execute Stage : Instruction 10
+At Execute Stage : Instruction 10 ( 100000110000110000000000000 )
    Inputs: Branch=false , Zero Flag=false , Jump =false, PC =11, ALU output=6
 
-At Decode Stage : Instruction 11
+At Decode Stage : Instruction 11 ( 110101100000111111111111111011 )
    Inputs: Opcode=3
    Outputs: , Jump=false, Branch=false, MemRead=false, MemtoReg=false, ALUControl=3, MemWrite=false, ALUSrc=true, RegWrite=true
 
-At Fetch Stage : Instruction 12
+At Fetch Stage : Instruction 12 ( 110110000000111111111111110101 )
    PC is incremented to 12
    Output : 110110000000111111111111110101
 
@@ -320,27 +320,27 @@ Clock Cycle : 24
 At Memory Stage : Instruction 10
    Inputs: MemRead=false ,MemWrite=false ,Data From ALU= 6 ,Write Data =0
 
-At Execute Stage : Instruction 11
+At Execute Stage : Instruction 11 ( 110101100000111111111111111011 )
    Inputs: ALUControl=3 , ALUSrc=true, Read data 1=0 , immediate value=-5   Outputs: -5, Zero Flag=false
 
-At Decode Stage : Instruction 12
+At Decode Stage : Instruction 12 ( 110110000000111111111111110101 )
    Input: Instruction=110110000000111111111111110101
    Outputs: Opcode=3, shift amount=3, Opcode=4085, Read Register 1=12, Read Register 2=0, Register 3=31, Immediate Value=-11, Address=100925429
 ________________________________________________
 Clock Cycle : 25
 
-At Write Back Stage : Instruction 10
+At Write Back Stage : Instruction 10 ( 100000110000110000000000000 )
    Inputs: RegWrite=true , MemToReg=false , DataFromMemory =0 ,Data From ALU= 6 ,WriteReg =8
     Register R8 has changed from : 0 to : 6
 
-At Execute Stage : Instruction 11
+At Execute Stage : Instruction 11 ( 110101100000111111111111111011 )
    Inputs: Branch=false , Zero Flag=false , Jump =false, PC =12, ALU output=-5
 
-At Decode Stage : Instruction 12
+At Decode Stage : Instruction 12 ( 110110000000111111111111110101 )
    Inputs: Opcode=3
    Outputs: , Jump=false, Branch=false, MemRead=false, MemtoReg=false, ALUControl=3, MemWrite=false, ALUSrc=true, RegWrite=true
 
-At Fetch Stage : Instruction 13
+At Fetch Stage : Instruction 13 ( 10110100000000000000010000000000 )
    PC is incremented to 13
    Output : 10110100000000000000010000000000
 
@@ -350,23 +350,23 @@ Clock Cycle : 26
 At Memory Stage : Instruction 11
    Inputs: MemRead=false ,MemWrite=false ,Data From ALU= -5 ,Write Data =0
 
-At Execute Stage : Instruction 12
+At Execute Stage : Instruction 12 ( 110110000000111111111111110101 )
    Inputs: ALUControl=3 , ALUSrc=true, Read data 1=0 , immediate value=-11   Outputs: -11, Zero Flag=false
 
-At Decode Stage : Instruction 13
+At Decode Stage : Instruction 13 ( 10110100000000000000010000000000 )
    Input: Instruction=10110100000000000000010000000000
    Outputs: Opcode=11, shift amount=11, Opcode=1024, Read Register 1=8, Read Register 2=0, Register 3=0, Immediate Value=1024, Address=67109888
 ________________________________________________
 Clock Cycle : 27
 
-At Write Back Stage : Instruction 11
+At Write Back Stage : Instruction 11 ( 110101100000111111111111111011 )
    Inputs: RegWrite=true , MemToReg=false , DataFromMemory =0 ,Data From ALU= -5 ,WriteReg =11
     Register R11 has changed from : 0 to : -5
 
-At Execute Stage : Instruction 12
+At Execute Stage : Instruction 12 ( 110110000000111111111111110101 )
    Inputs: Branch=false , Zero Flag=false , Jump =false, PC =13, ALU output=-11
 
-At Decode Stage : Instruction 13
+At Decode Stage : Instruction 13 ( 10110100000000000000010000000000 )
    Inputs: Opcode=11
    Outputs: , Jump=false, Branch=false, MemRead=false, MemtoReg=false, ALUControl=11, MemWrite=true, ALUSrc=true, RegWrite=false
 
@@ -376,17 +376,17 @@ Clock Cycle : 28
 At Memory Stage : Instruction 12
    Inputs: MemRead=false ,MemWrite=false ,Data From ALU= -11 ,Write Data =0
 
-At Execute Stage : Instruction 13
+At Execute Stage : Instruction 13 ( 10110100000000000000010000000000 )
    Inputs: ALUControl=11 , ALUSrc=true, Read data 1=0 , immediate value=1024   Outputs: 1024, Zero Flag=false
 
 ________________________________________________
 Clock Cycle : 29
 
-At Write Back Stage : Instruction 12
+At Write Back Stage : Instruction 12 ( 110110000000111111111111110101 )
    Inputs: RegWrite=true , MemToReg=false , DataFromMemory =0 ,Data From ALU= -11 ,WriteReg =12
     Register R12 has changed from : 0 to : -11
 
-At Execute Stage : Instruction 13
+At Execute Stage : Instruction 13 ( 10110100000000000000010000000000 )
    Inputs: Branch=false , Zero Flag=false , Jump =false, PC =13, ALU output=1024
 
 ________________________________________________
@@ -399,7 +399,7 @@ At Memory Stage : Instruction 13
 ________________________________________________
 Clock Cycle : 31
 
-At Write Back Stage : Instruction 13
+At Write Back Stage : Instruction 13 ( 10110100000000000000010000000000 )
    Inputs: RegWrite=false , MemToReg=false , DataFromMemory =0 ,Data From ALU= 1024 ,WriteReg =8
 
 ________________________________________________
