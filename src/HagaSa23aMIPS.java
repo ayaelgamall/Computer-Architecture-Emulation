@@ -124,6 +124,7 @@ public class HagaSa23aMIPS {
                 toBeExcuted=null;
                 toBeDecoded=null;
             }
+            System.out.println("________________________________________________");
         }
         System.out.println("The Stages are finished");
         System.out.println("The Registers Content is :" +printReg());
