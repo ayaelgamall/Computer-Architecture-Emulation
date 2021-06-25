@@ -9,7 +9,7 @@ public class HagaSa23aMIPS {
     static int[] Registers;
     static int PC;
     static final int R0=0;
-    static int programLength;
+    static int programLength=0;
     static boolean decode=false;
     static boolean fetch=true;
     static boolean excute=false;
@@ -97,11 +97,11 @@ public class HagaSa23aMIPS {
         Instruction toBeDecoded=null;
         Instruction toMemory = null;
         Instruction toWB = null;
-        int limit = 7+ (programLength-1)*2;
-        for (int cycle=1 ; cycle<=limit; cycle++)
+        int limit = 7 + (programLength-1)*2;
+        for (int cycle=1 ; ; cycle++)
         {boolean Jump = false;
             System.out.println("Clock Cycle : "+cycle);
-            if(writeBack(toWB))break;
+            if(writeBack(toWB)) break;
             memory(toMemory);
             toWB = toMemory;
             if(excute) execute1(toBeExcuted);
