@@ -278,7 +278,7 @@ public class HagaSa23aMIPS {
 
     private static Instruction decode1(int i) {
         if(i==-1)return null;
-        System.out.println("At Decode 1 Stage : Instruction "+(PC-1));
+        System.out.println("At Decode Stage : Instruction "+(PC-1));
         int opcode;  // bits31:28
         int r1 ;      // bits27:23
         int r2 ;      // bit22:18
