@@ -201,7 +201,7 @@ public class HagaSa23aMIPS {
                 break;
             case 8: instruction.ALUOutput = instruction.valueR2 << instruction.shamt;//Shift left logical
                 break;
-            case 9: instruction.ALUOutput = instruction.valueR2 >> instruction.shamt;//shift right logical
+            case 9: instruction.ALUOutput = instruction.valueR2 >>> instruction.shamt;//shift right logical
                 break;
             case 10: case 11:instruction.ALUOutput = instruction.r2+instruction.immediate;//Load/store word
                 break;
