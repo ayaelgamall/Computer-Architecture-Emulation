@@ -124,6 +124,7 @@ public class HagaSa23aMIPS {
                 toBeExcuted=null;
                 toBeDecoded=null;
             }
+            System.out.println("_______________________________________");
         }
         System.out.println("The Stages are finished");
         System.out.println("The Registers Content is :" +printReg());
@@ -154,7 +155,7 @@ public class HagaSa23aMIPS {
             i.valueLW=Memory[i.ALUOutput];
 
         else if(i.MemWrite){
-            System.out.println("    Memory index " +i.ALUOutput+ " has changed from : "+Memory[i.ALUOutput]);
+            System.out.print("    Memory index " +i.ALUOutput+ " has changed from : "+Memory[i.ALUOutput]);
             Memory[i.ALUOutput]=i.valueR1;
             System.out.println("    to : "+Memory[i.ALUOutput]);
         }
@@ -207,7 +208,7 @@ public class HagaSa23aMIPS {
         if(i==null)return;
         System.out.println("At Execute Stage : Instruction "+i.pc);
         System.out.print("   Inputs: ALUControl="+i.opcode+",ALUSrc="+i.ALUSrc+
-                ", Read data 1="+i.valueR2+((!i.ALUSrc)?(", Read data 2="+i.valueR3):("immediate value="+i.immediate)));
+                " , Read data 1="+i.valueR2+((!i.ALUSrc)?(", Read data 2="+i.valueR3):(" ,immediate value="+i.immediate)));
 
         switch (i.opcode) {
             case 0: i.ALUOutput = i.valueR2 + i.valueR3; //ADD
@@ -320,14 +321,14 @@ public class HagaSa23aMIPS {
 
         decode= false;
         Instruction inst = new Instruction(opcode,shamt,r1,r2,r3,imm,address,valueR1,valueR2,valueR3);
-        System.out.println("   Outputs: Opcode="+inst.opcode);
-        System.out.print("shift amount="+inst.opcode);
-        System.out.print("Opcode="+inst.shamt);
-        System.out.print("Read Register 1="+inst.r1);
-        System.out.print("Read Register 2="+inst.r2);
-        System.out.print("Register 3="+inst.r3);
-        System.out.print("Immediate Value="+inst.immediate);
-        System.out.print("Address="+inst.address);
+        System.out.print("   Outputs: Opcode="+inst.opcode);
+        System.out.print(" ,shift amount="+inst.opcode);
+        System.out.print(" ,Opcode="+inst.shamt);
+        System.out.print(" ,Read Register 1="+inst.r1);
+        System.out.print(" ,Read Register 2="+inst.r2);
+        System.out.print(" ,Register 3="+inst.r3);
+        System.out.print(" ,Immediate Value="+inst.immediate);
+        System.out.print(" ,Address="+inst.address);
         System.out.println();
          return inst;
 
