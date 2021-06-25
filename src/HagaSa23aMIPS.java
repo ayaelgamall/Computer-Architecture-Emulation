@@ -103,7 +103,7 @@ public class HagaSa23aMIPS {
         Instruction toBeDecoded=null;
         Instruction toMemory = null;
         Instruction toWB = null;
-        int limit = 7 + (programLength-1)*2;
+//        int limit = 7 + (programLength-1)*2;
         for (int cycle=1 ; ; cycle++)
         {boolean Jump = false;
             System.out.println("Clock Cycle : "+cycle);
@@ -278,6 +278,7 @@ public class HagaSa23aMIPS {
     }
 
     private static Instruction decode1(int i) {
+        System.out.println("At Decode 1 Stage : Instruction "+(PC-1));
         if(i==-1)return null;
         int opcode;  // bits31:28
         int r1 ;      // bits27:23
@@ -321,7 +322,6 @@ public class HagaSa23aMIPS {
 
         decode= false;
         Instruction inst = new Instruction(opcode,shamt,r1,r2,r3,imm,address,valueR1,valueR2,valueR3);
-        System.out.println("At Decode 1 Stage : Instruction "+inst.pc);
         System.out.println("   Outputs: Opcode="+inst.opcode);
         System.out.print("shift amount="+inst.opcode);
         System.out.print("Opcode="+inst.shamt);
@@ -344,7 +344,6 @@ public class HagaSa23aMIPS {
         System.out.println("   PC is incremented to "+PC);
         return res;
     }
-
 
     static class Instruction{
         int pc=PC;
@@ -369,7 +368,6 @@ public class HagaSa23aMIPS {
         int ALUOutput;
         int valueLW;
 
-
         public Instruction( int opcode, int shamt, int r1, int r2, int r3, int immediate, int address ,int valueR1,int valueR2,int valueR3) {
             this.opcode = opcode;
             this.shamt = shamt;
@@ -384,9 +382,6 @@ public class HagaSa23aMIPS {
 
         }
     }
-
-
-
 
 //    private static void Assembler(String Name) {
 //        Memory = new int[2048];
