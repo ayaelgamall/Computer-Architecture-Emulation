@@ -182,7 +182,7 @@ public class HagaSa23aMIPS {
             return false;
         }
         execute =true;
-        System.out.println("At Execute 2 Stage : Instruction "+i.pc);
+        System.out.println("At Execute Stage : Instruction "+i.pc);
         System.out.println("   Inputs: Branch="+i.Branch + " , Zero Flag="+ zeroFlag +" , Jump ="+i.Jump+", PC ="+PC+", ALU output="+i.ALUOutput );
 
         if(i.Branch && !zeroFlag){
@@ -205,7 +205,7 @@ public class HagaSa23aMIPS {
 
     private static void execute1(Instruction i) {
         if(i==null)return;
-        System.out.println("At Execute 1 Stage : Instruction "+i.pc);
+        System.out.println("At Execute Stage : Instruction "+i.pc);
         System.out.print("   Inputs: ALUControl="+i.opcode+",ALUSrc="+i.ALUSrc+
                 ", Read data 1="+i.valueR2+((!i.ALUSrc)?(", Read data 2="+i.valueR3):("immediate value="+i.immediate)));
 
@@ -243,14 +243,14 @@ public class HagaSa23aMIPS {
 
     private static void decode2(Instruction i) {
         if(i==null)return;
-        System.out.println("At Decode 2 Stage : Instruction "+i.pc);
+        System.out.println("At Decode Stage : Instruction "+i.pc);
         System.out.println("   Inputs: Opcode="+i.opcode);
 
         switch (i.opcode){
             case 0:
             case 1:
             case 9:
-            case 8:i.RegDst =i.RegWrite=true;
+            case 8:i.RegWrite=true;
                 break;
             case 2:
             case 3:
@@ -262,10 +262,8 @@ public class HagaSa23aMIPS {
             case 11:i.ALUSrc=i.MemWrite=true;break;
         }
         System.out.print("   Outputs: ");
-        System.out.print(",RegDest="+i.RegDst);
         System.out.print(",Jump="+i.Jump);
         System.out.print(",Branch="+i.Branch);
-        System.out.print(",RegDest="+i.RegDst);
         System.out.print(",MemRead="+i.MemRead);
         System.out.print(",MemtoReg="+i.MemtoReg);
         System.out.print(",ALUControl="+i.opcode);
@@ -289,6 +287,7 @@ public class HagaSa23aMIPS {
         int address; // bits27:0
         int valueR2;
         int valueR3;
+        System.out.println("At Decode Stage : Instruction "+PC);
         System.out.println("   Input: Instruction="+Integer.toBinaryString(i));
 
         opcode = i & 0b11110000000000000000000000000000 ;
@@ -303,7 +302,7 @@ public class HagaSa23aMIPS {
         if(opcode<0) opcode= (int) ((2 * (long) Integer.MAX_VALUE + 2 + opcode) >>28);
         else opcode = opcode >> 28 ;
         if (opcode!=10&&opcode!=11) {
-                if (String.format("%18s", Integer.toBinaryString(imm).replaceAll(" ", "0")).charAt(0)=='1') {
+            if (String.format("%18s", Integer.toBinaryString(imm).replaceAll(" ", "0")).charAt(0)=='1') {
                     imm= (int)Long.parseLong(String.format("%14s", Integer.toBinaryString(1)).replaceAll(" ", "1")+String.format("%18s", Integer.toBinaryString(imm).replaceAll(" ", "0")),2);
                 }
         }
@@ -338,10 +337,11 @@ public class HagaSa23aMIPS {
 
     private static int fetch() {
         if(PC==programLength)return -1;
-        System.out.println("At Fetch Stage : Instruction "+PC);
         int res = Memory[PC];
         PC++;
+        System.out.println( "At Fetch Stage : Instruction "+ PC);
         System.out.println("   PC is incremented to "+PC);
+        System.out.println("   Output : "+ res);
         return res;
     }
 
@@ -357,7 +357,7 @@ public class HagaSa23aMIPS {
         int valueR3;
         int immediate;
         int address;
-        boolean RegDst; //todo not used I think in our architecture delete it
+
         boolean ALUSrc ;
         boolean RegWrite;
         boolean MemRead;
