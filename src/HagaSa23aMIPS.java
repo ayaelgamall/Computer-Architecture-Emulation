@@ -105,15 +105,16 @@ public class HagaSa23aMIPS {
 //        int limit = 7 + (programLength-1)*2;
         for (int cycle=1 ; ; cycle++)
         {boolean Jump = false;
-            pw.println("Clock Cycle : "+cycle);
+            pw.println("Clock Cycle : "+cycle+"\n");
             if(odd)
              if(writeBack(toWB)) break;
             if(!odd) memory(toMemory);
-            toWB = toMemory;
+            toWB = toMemory;toMemory=null;
             if(execute) execute1(toBeExcuted);
             else{
                Jump =execute2(toBeExcuted);
                 toMemory=toBeExcuted;
+                toBeExcuted=null;
             }
             if(decode) toBeDecoded=decode1(instruction);
             else{decode2(toBeDecoded);toBeExcuted=toBeDecoded;}
@@ -162,6 +163,7 @@ public class HagaSa23aMIPS {
             Memory[i.ALUOutput]=i.valueR1;
             pw.println(" to : "+Memory[i.ALUOutput]);
         }
+        pw.println();
     }
     private static boolean writeBack(Instruction i) {
         if(i==null) return false;
@@ -175,7 +177,7 @@ public class HagaSa23aMIPS {
             pw.println(" to : "+Registers[i.r1]);
 
         }
-
+       pw.println();
         if(i.pc==programLength)return true;
 
         return false;
@@ -193,7 +195,7 @@ public class HagaSa23aMIPS {
             pw.println("   Branch Instruction");
             pw.print("   PC value changed from "+ PC );
             PC = i.pc + i.ALUOutput;
-            pw.println(" to "+ PC );
+            pw.println(" to "+ PC +"\n");
             return true;
         }
         if (i.Jump){
@@ -201,9 +203,10 @@ public class HagaSa23aMIPS {
             pw.println("   Address="+i.address);
             pw.print("   PC value changed from "+ PC );
             PC = i.address;
-            pw.println(" to "+ PC );
+            pw.println(" to "+ PC +"\n");
             return true;
         }
+        pw.println();
         return false;
     }
 
@@ -241,8 +244,9 @@ public class HagaSa23aMIPS {
             default:
         }
         execute=false;
-        pw.println();
+
         pw.println("   Outputs: "+i.ALUOutput+", Zero Flag="+zeroFlag);
+        pw.println();
     }
 
     private static void decode2(Instruction i) {
@@ -274,7 +278,7 @@ public class HagaSa23aMIPS {
         pw.print(", MemWrite="+i.MemWrite);
         pw.print(", ALUSrc="+i.ALUSrc);
         pw.print(", RegWrite="+i.RegWrite);
-        pw.println();
+        pw.println("\n");
         decode=true;
 
     }
@@ -345,7 +349,7 @@ public class HagaSa23aMIPS {
         PC++;
         pw.println( "At Fetch Stage : Instruction "+ PC);
         pw.println("   PC is incremented to "+PC);
-        pw.println("   Output : "+ Integer.toBinaryString(res));
+        pw.println("   Output : "+ Integer.toBinaryString(res) +"\n");
         return res;
     }
 
