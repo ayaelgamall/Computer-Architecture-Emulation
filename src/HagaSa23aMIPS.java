@@ -168,7 +168,7 @@ public class HagaSa23aMIPS {
         if(i==null){
             return false;
         }
-        if(i.Branch && zeroFlag){
+        if(i.Branch && !zeroFlag){
             PC = i.pc + i.ALUOutput;
             return true;
         }
