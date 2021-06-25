@@ -9,5 +9,5 @@ ADDI R9 R0 9  //nop
 ADDI R10 R0 10   //nop
 ADD R8 R6 R3 # s0 = f = ( g − h ) + ( i − j ) = t0 + t3
 ADDI R11 R0 -5
-ADDI  R12 R0 -11
+ADDI R12 R0 -11
 SW R8 R0 1024   //=7
