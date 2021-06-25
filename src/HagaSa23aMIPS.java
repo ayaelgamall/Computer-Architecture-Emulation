@@ -183,7 +183,7 @@ public class HagaSa23aMIPS {
     }
     private static boolean writeBack(Instruction i) {
         if(i==null) return false;
-        System.out.println("At Execute Stage : Instruction "+i.pc);
+        System.out.println("At Write Back Stage : Instruction "+i.pc);
         System.out.println("   Inputs: RegWrite="+i.RegWrite + " , MemToReg="+i.MemtoReg+" , DataFromMemory ="+i.valueLW +" ,Data From ALU= " +i.ALUOutput + " ,WriteReg ="+ i.r1 +"\n" );
         if(i.RegWrite){
             System.out.println("    Register R" +i.r1+ " has changed from : "+Registers[i.r1]);
