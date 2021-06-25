@@ -264,11 +264,15 @@ public class HagaSa23aMIPS {
 
     private static void decode2(Instruction i) {
         if(i==null)return;
+        System.out.println("At Decode 2 Stage : Instruction "+i.pc);
+        System.out.println("   Inputs: Opcode="+i.opcode);
+
         switch (i.opcode){
             case 0:
             case 1:
             case 9:
-            case 8:i.RegDst =i.RegWrite=true;break;
+            case 8:i.RegDst =i.RegWrite=true;
+                break;
             case 2:
             case 3:
             case 5:
@@ -278,6 +282,18 @@ public class HagaSa23aMIPS {
             case 10:i.ALUSrc=i.RegWrite=i.MemRead=i.MemtoReg=true;break;
             case 11:i.ALUSrc=i.MemWrite=true;break;
         }
+        System.out.print("   Outputs: ");
+        System.out.print(",RegDest="+i.RegDst);
+        System.out.print(",Jump="+i.Jump);
+        System.out.print(",Branch="+i.Branch);
+        System.out.print(",RegDest="+i.RegDst);
+        System.out.print(",MemRead="+i.MemRead);
+        System.out.print(",MemtoReg="+i.MemtoReg);
+        System.out.print(",ALUControl="+i.opcode);
+        System.out.print(",MemWrite="+i.MemWrite);
+        System.out.print(",ALUSrc="+i.ALUSrc);
+        System.out.print(",RegWrite="+i.RegWrite);
+        System.out.println();
         decode=true;
 
     }
