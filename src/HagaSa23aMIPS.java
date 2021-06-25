@@ -2,11 +2,13 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Arrays;
+
 public class HagaSa23aMIPS {
     static int[] Memory;
     static int[] Registers;
     static int PC;
-    static final int Zero=0;
+    static final int R0=0;
     static int programLength;
     static boolean decode=false;
     static boolean fetch=true;
@@ -17,14 +19,14 @@ public class HagaSa23aMIPS {
         runProgram();
     }
      private static void Assembler(String Name) {
-        Memory = new int[1024];
+        Memory = new int[2048];
         int programLength=0;
         Registers=new int[32];
         PC=0;//??
         String fileName = "src/" + Name+".txt";
         try {
             BufferedReader reader = new BufferedReader(new FileReader(fileName));
-            StringBuilder stringBuilder = new StringBuilder();
+            StringBuilder stringBuilder = new StringBuilder();//not needed ??
             String line = null;
             while ((line = reader.readLine()) != null) {
                 stringBuilder.append(line);
@@ -95,75 +97,76 @@ public class HagaSa23aMIPS {
         Instruction toBeDecoded=null;
         Instruction toMemory = null;
         Instruction toWB = null;
-
-        for (int cycle=0 ;PC<Math.min(programLength,1024) ; cycle++)
-        {
-            writeBack(toWB);
+        int limit = 7+ (programLength-1)*2;
+        for (int cycle=1 ;; cycle++)
+        {boolean Jump = false;
+            System.out.println("Clock Cycle : "+cycle);
+            if(  writeBack(toWB))break;
             memory(toMemory);
             toWB=toMemory;
             if( excute) execute1(toBeExcuted);
             else{
-                boolean Jump=execute2(toBeExcuted);
-                if(Jump){
-                    fetch=true;
-                    toBeExcuted=null;
-                    toBeDecoded=null;
-                    toMemory = null;
-                    continue;
-                }
+               Jump =execute2(toBeExcuted);
                 toMemory=toBeExcuted;
             }
             if( decode) toBeDecoded=decode1(instruction);
             else{ decode2(toBeDecoded);toBeExcuted=toBeDecoded;}
 
             instruction= fetch?  fetch():-1 ;fetch=!fetch;
-
+            if(Jump){
+                instruction=-1;
+                toBeExcuted=null;
+                toBeDecoded=null;
+            }
         }
+        System.out.println("The Stages are finished");
+        System.out.println("The Registers Content is :" +printReg());
+        System.out.println("The Memory Content is :"+ Arrays.toString(Memory));
     }
+
+    private static String printReg() {
+        StringBuilder s = new StringBuilder("R0=" + R0);
+        for (int i = 1; i < Registers.length; i++)
+            s.append(" , R").append(i).append("=").append(Registers[i]);
+        s.append(" , PC=" );s.append(PC);
+        return s.toString();
+    }
+
     private static void memory(Instruction i) {
         if(i==null)return;
+        System.out.println("At Memory Stage : Instruction "+i.pc);
+        System.out.println("   Inputs: MemRead="+i.MemRead  +" ,Data From ALU= " +i.ALUOutput + "Write Data ="+ i.valueR1 );
+
         if(i.MemRead)
             i.valueLW=Memory[i.ALUOutput];
-        else if(i.MemWrite)
+
+        else if(i.MemWrite){
+            System.out.println("    Memory index " +i.ALUOutput+ " has changed from : "+Memory[i.ALUOutput]);
             Memory[i.ALUOutput]=i.valueR1;
+            System.out.println("    to : "+Memory[i.ALUOutput]);
+        }
     }
-    private static void writeBack(Instruction i) {
-        if(i==null)return;
+    private static boolean writeBack(Instruction i) {
+        if(i==null) return false;
+        System.out.println("At Execute Stage : Instruction "+i.pc);
+        System.out.println("   Inputs: RegWrite="+i.RegWrite + " , MemToReg="+i.MemtoReg+" , DataFromMemory ="+i.valueLW +" ,Data From ALU= " +i.ALUOutput + "WriteReg ="+ i.r1 +"\n" );
         if(i.RegWrite){
-           Registers[i.r1]=i.MemtoReg? i.valueLW : i.ALUOutput;
+            System.out.println("    Register R" +i.r1+ " has changed from : "+Registers[i.r1]);
+            if(i.r1!=0)
+            Registers[i.r1]=i.MemtoReg? i.valueLW : i.ALUOutput;
+            System.out.println("    to : "+Registers[i.r1]);
+
         }
 
-    }
-    public static int ALU(int operandA, int operandB, int operation) {
+        if(i.pc==programLength)return true;
 
-        int output = 0;
-        int zeroFlag = 0;
-        switch(operation ){
-            case 0:output = operandA<<operandB;break;
-            case 1:output= operandA & operandB;break;
-            case 2:output=operandA+operandB;break;
-            case 3:output=operandA*operandB;break;
-            case 4:output=operandA>operandB?1:0;break;
-            case 5:output= ~(operandA & operandB);break;
-            case 6:output=operandA-operandB;break;
-            default: ;
-        }
-        zeroFlag=output==0?1:0;
-        // Complete the ALU body here...
-
-        System.out.println("Operation = "+operation);
-        System.out.println("First Operand = "+operandA);
-        System.out.println("Second Operand = "+operandB);
-        System.out.println("Result = "+output);
-        System.out.println("Zero Flag = "+zeroFlag);
-
-        return output;
+        return false;
     }
     private static boolean execute2(Instruction i) {
         if(i==null){
             return false;
         }
-        if(i.Branch && zeroFlag){
+        if(i.Branch && !zeroFlag){
             PC = i.pc + i.ALUOutput;
             return true;
         }
@@ -176,6 +179,7 @@ public class HagaSa23aMIPS {
     }
 
     private static void execute1(Instruction instruction) {
+        if(instruction==null)return;
         switch (instruction.opcode) {
             case 0: instruction.ALUOutput = instruction.valueR2 + instruction.valueR3; //ADD
                 break;
@@ -195,7 +199,7 @@ public class HagaSa23aMIPS {
                 break;
             case 8: instruction.ALUOutput = instruction.valueR2 << instruction.shamt;//Shift left logical
                 break;
-            case 9: instruction.ALUOutput = instruction.valueR2 >> instruction.shamt;//shift right logical
+            case 9: instruction.ALUOutput = instruction.valueR2 >>> instruction.shamt;//shift right logical
                 break;
             case 10: case 11:instruction.ALUOutput = instruction.r2+instruction.immediate;//Load/store word
                 break;
@@ -206,6 +210,7 @@ public class HagaSa23aMIPS {
     }
 
     private static void decode2(Instruction i) {
+        if(i==null)return;
         switch (i.opcode){
             case 0:
             case 1:
@@ -264,8 +269,10 @@ public class HagaSa23aMIPS {
     }
 
     private static int fetch() {
+        if(PC==programLength)return -1;
         int res = Memory[PC];
         PC++;
+        System.out.println();
         return res;
     }
 
