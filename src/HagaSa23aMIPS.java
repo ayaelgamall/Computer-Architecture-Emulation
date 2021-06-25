@@ -155,6 +155,7 @@ public class HagaSa23aMIPS {
         System.out.println("   Inputs: RegWrite="+i.RegWrite + " , MemToReg="+i.MemtoReg+" , DataFromMemory ="+i.valueLW +" ,Data From ALU= " +i.ALUOutput + "WriteReg ="+ i.r1 +"\n" );
         if(i.RegWrite){
             System.out.println("    Register R" +i.r1+ " has changed from : "+Registers[i.r1]);
+            if(i.r1!=0)
             Registers[i.r1]=i.MemtoReg? i.valueLW : i.ALUOutput;
             System.out.println("    to : "+Registers[i.r1]);
 
