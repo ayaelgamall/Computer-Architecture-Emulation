@@ -2,9 +2,6 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.StandardSocketOptions;
-import java.util.ArrayList;
-
 public class HagaSa23aMIPS {
     static int[] Memory;
     static int[] Registers;
@@ -16,8 +13,8 @@ public class HagaSa23aMIPS {
     static boolean excute=false;
     static boolean zeroFlag;
     public static void main (String[] args){
-        Assembler("FileName");
-//        runProgram();
+        Assembler("program1");
+        runProgram();
     }
      private static void Assembler(String Name) {
         Memory = new int[1024];
@@ -29,52 +26,13 @@ public class HagaSa23aMIPS {
             BufferedReader reader = new BufferedReader(new FileReader(fileName));
             StringBuilder stringBuilder = new StringBuilder();
             String line = null;
-            ArrayList<String[]> assm= new ArrayList<>();
-            String [] labels= new String [32];
-
-
             while ((line = reader.readLine()) != null) {
                 stringBuilder.append(line);
                 if (!(line.equals(""))) {
-                    assm.add(line.split(" "));
+                    Memory[programLength++]=(int)Long.parseLong(getBinary(line.split(" ")),2);
                 }
         }
             reader.close();
-
-            for (int i =0;i<assm.size();i++){
-                    if (assm.get(i)[0].equalsIgnoreCase("BNE")){
-                        labels[i] = assm.get(i)[3];
-                    }
-                    if (assm.get(i)[0].equalsIgnoreCase("J")){
-                        labels[i] = assm.get(i)[1];
-                    }
-            }
-            for (int i =0;i< assm.size();i++){
-//                System.out.println("i= "+i+" programLength= "+programLength);
-                if (!(assm.get(i)[0].equalsIgnoreCase("ADD")||assm.get(i)[0].equalsIgnoreCase("SUB")||assm.get(i)[0].equalsIgnoreCase("MULI")||assm.get(i)[0].equalsIgnoreCase("BNE")||assm.get(i)[0].equalsIgnoreCase("ANDI")||assm.get(i)[0].equalsIgnoreCase("ORI")||assm.get(i)[0].equalsIgnoreCase("J")||assm.get(i)[0].equalsIgnoreCase("SLL")||assm.get(i)[0].equalsIgnoreCase("SRL")||assm.get(i)[0].equalsIgnoreCase("LW")||assm.get(i)[0].equalsIgnoreCase("SW"))){
-                        for (int j=0;j<labels.length;j++){
-//                            System.out.println(labels[j]+"  "+j+" "+assm.get(i)[0]);
-                            if (labels[j]!=null){
-                                if (labels[j].equals(assm.get(i)[0])){
-
-                                if (Memory[j]==7){
-                                    Memory[j]=Integer.parseInt(String.format("%4s", Integer.toBinaryString(Memory[j])).replaceAll(" ", "0")+""+String.format("%28s", Integer.toBinaryString(programLength)).replaceAll(" ", "0"),2);
-                                }
-                                else{
-                                    Memory[j]=Integer.parseInt(String.format("%14s", Integer.toBinaryString(Memory[j])).replaceAll(" ", "0")+""+String.format("%18s", Integer.toBinaryString(programLength-j)).replaceAll(" ", "0"),2);
-}
-                            }
-                            }
-                        }
-                }
-                else {
-                    Memory[programLength++]=(int)Long.parseLong(getBinary(assm.get(i)),2);
-                }
-            }
-
-//            for (int i =0;i<4;i++){
-//                System.out.println(Memory[i]+"   "+i);
-//            }
         }
         catch(IOException e) {
             System.out.println("FILE NOT FOUND");
@@ -86,9 +44,6 @@ public class HagaSa23aMIPS {
         boolean sll=false;
         boolean mem=false;
         int r;
-        boolean branch= false;
-        if ((x[0].toUpperCase()).equals("BNE"))
-            branch=true;
         switch(x[0].toUpperCase()) {
             case "ADD" : output.append("0000"); break ;
             case "SUB" : output.append("0001"); break ;
@@ -97,7 +52,7 @@ public class HagaSa23aMIPS {
             case "BNE" : output.append("0100"); immediate=true;break ;
             case "ANDI" : output.append("0101");immediate=true; break ;
             case "ORI" : output.append("0110"); immediate=true;break ;
-            case "J" : output.append("0111"); return output.toString();
+            case "J" : output.append("0111"); output.append(String.format("%28s", Integer.toBinaryString(Integer.parseInt(x[1]))).replaceAll(" ", "0"));return output.toString() ;
             case "SLL" : output.append("1000"); sll=true; break ;
             case "SRL" : output.append("1001");sll=true; break ;
             case "LW" : output.append("1010");mem=true; break ;
@@ -119,9 +74,6 @@ public class HagaSa23aMIPS {
         r=Integer.parseInt(x[2].substring(1,x[2].length()));
         output.append(String.format("%5s", Integer.toBinaryString(r)).replaceAll(" ", "0"));
         if (immediate) {
-            if (branch){
-                return output.toString();
-            }
             output.append(String.format("%18s", Integer.toBinaryString(Integer.parseInt(x[3]))).replaceAll(" ", "0"));
             return output.toString();
         }
