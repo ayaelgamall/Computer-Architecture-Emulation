@@ -155,21 +155,21 @@ public class HagaSa23aMIPS {
             i.valueLW=Memory[i.ALUOutput];
 
         else if(i.MemWrite){
-            System.out.println("    Memory index " +i.ALUOutput+ " has changed from : "+Memory[i.ALUOutput]);
+            System.out.print("    Memory index " +i.ALUOutput+ " has changed from : "+Memory[i.ALUOutput]);
             Memory[i.ALUOutput]=i.valueR1;
-            System.out.println("    to : "+Memory[i.ALUOutput]);
+            System.out.println(" to : "+Memory[i.ALUOutput]);
         }
     }
     private static boolean writeBack(Instruction i) {
         if(i==null) return false;
         System.out.println("At Write Back Stage : Instruction "+i.pc);
-        System.out.println("   Inputs: RegWrite="+i.RegWrite + " , MemToReg="+i.MemtoReg+" , DataFromMemory ="+i.valueLW +" ,Data From ALU= " +i.ALUOutput + " ,WriteReg ="+ i.r1 +"\n" );
+        System.out.println("   Inputs: RegWrite="+i.RegWrite + " , MemToReg="+i.MemtoReg+" , DataFromMemory ="+i.valueLW +" ,Data From ALU= " +i.ALUOutput + " ,WriteReg ="+ i.r1  );
 
         if(i.RegWrite){
-            System.out.println("    Register R" +i.r1+ " has changed from : "+Registers[i.r1]);
+            System.out.print("    Register R" +i.r1+ " has changed from : "+Registers[i.r1]);
             if(i.r1!=0)
             Registers[i.r1]=i.MemtoReg? i.valueLW : i.ALUOutput;
-            System.out.println("    to : "+Registers[i.r1]);
+            System.out.println(" to : "+Registers[i.r1]);
 
         }
 
@@ -207,8 +207,8 @@ public class HagaSa23aMIPS {
     private static void execute1(Instruction i) {
         if(i==null)return;
         System.out.println("At Execute Stage : Instruction "+i.pc);
-        System.out.print("   Inputs: ALUControl="+i.opcode+",ALUSrc="+i.ALUSrc+
-                ", Read data 1="+i.valueR2+((!i.ALUSrc)?(", Read data 2="+i.valueR3):("immediate value="+i.immediate)));
+        System.out.print("   Inputs: ALUControl="+i.opcode+" ,ALUSrc="+i.ALUSrc+
+                ", Read data 1="+i.valueR2+((!i.ALUSrc)?(" , Read data 2="+i.valueR3):(" ,immediate value="+i.immediate)));
 
         switch (i.opcode) {
             case 0: i.ALUOutput = i.valueR2 + i.valueR3; //ADD
@@ -278,7 +278,7 @@ public class HagaSa23aMIPS {
 
     private static Instruction decode1(int i) {
         if(i==-1)return null;
-        System.out.println("At Decode Stage : Instruction "+(PC-1));
+//        System.out.println("At Decode Stage : Instruction "+(PC-1));
         int opcode;  // bits31:28
         int r1 ;      // bits27:23
         int r2 ;      // bit22:18
