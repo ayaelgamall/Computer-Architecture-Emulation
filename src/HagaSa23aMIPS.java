@@ -10,9 +10,9 @@ public class HagaSa23aMIPS {
     static int PC;
     static final int R0=0;
     static int programLength=0;
-    static boolean decode=false;
+    static boolean decode=true;
     static boolean fetch=true;
-    static boolean execute =false;
+    static boolean execute =true;
     static boolean zeroFlag;
     public static void main (String[] args){
         Assembler("Normal");
@@ -139,7 +139,7 @@ public class HagaSa23aMIPS {
             if(writeBack(toWB)) break;
             memory(toMemory);
             toWB = toMemory;
-            if(!execute) execute1(toBeExcuted);
+            if(execute) execute1(toBeExcuted);
             else{
                Jump =execute2(toBeExcuted);
                 toMemory=toBeExcuted;
@@ -201,6 +201,7 @@ public class HagaSa23aMIPS {
         if(i==null){
             return false;
         }
+        execute =true;
         if(i.Branch && !zeroFlag){
             PC = i.pc + i.ALUOutput;
             return true;
@@ -209,7 +210,6 @@ public class HagaSa23aMIPS {
             PC = i.address;
             return true;
         }
-        execute =false;
         return false;
     }
 
@@ -239,7 +239,7 @@ public class HagaSa23aMIPS {
             case 10: case 11:instruction.ALUOutput = instruction.r2+instruction.immediate;//Load/store word
                 break;
             default:
-
+            execute=false;
         }
 
     }
