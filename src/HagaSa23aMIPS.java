@@ -341,7 +341,7 @@ public class HagaSa23aMIPS {
         PC++;
         System.out.println( "At Fetch Stage : Instruction "+ PC);
         System.out.println("   PC is incremented to "+PC);
-        System.out.println("   Output : "+ res);
+        System.out.println("   Output : "+ Integer.toBinaryString(res));
         return res;
     }
 
