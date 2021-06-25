@@ -1,3 +1,7 @@
-Add R1 R3 R4
-Lw R21 30(R0)
-SW R1 0(R1)
+add R1 R2 R3
+j aya
+lw R1 4(R7)
+add R1 R2 R3
+aya
+
+
