@@ -1,7 +1,5 @@
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.Arrays;
 import java.util.ArrayList;
 public class HagaSa23aMIPS {
@@ -14,9 +12,14 @@ public class HagaSa23aMIPS {
     static boolean fetch=true;
     static boolean execute =true;
     static boolean zeroFlag;
-    public static void main (String[] args){
+    static  PrintWriter pw;
+
+    public static void main (String[] args) throws FileNotFoundException {
+        pw = new PrintWriter("Printing1.txt");
         Assembler("Normal");
         runProgram();
+        pw.flush();
+        pw.close();
     }
     private static void Assembler(String Name) {
         Memory = new int[2048];
@@ -156,7 +159,14 @@ public class HagaSa23aMIPS {
         }
         System.out.println("The Stages are finished");
         System.out.println("The Registers Content is :" +printReg());
-        System.out.println("The Memory Content is :"+ Arrays.toString(Memory));
+        pw.println("The Memory Content is :");
+        printMem();
+    }
+
+    private static void printMem() {
+        for (int i = 0; i < Memory.length; i++) {
+            pw.println("Index "+i +" = "+Memory[i]);
+        }
     }
 
     private static String printReg() {
