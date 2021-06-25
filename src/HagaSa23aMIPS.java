@@ -45,7 +45,7 @@ public class HagaSa23aMIPS {
             }
         }
         catch(IOException e) {
-            System.out.println("FILE NOT FOUND");
+            pw.println("FILE NOT FOUND");
         }
     }
     private static String getBinary(String [] x) {
@@ -66,7 +66,7 @@ public class HagaSa23aMIPS {
             case "SRL" : output.append("1001");sll=true; break ;
             case "LW" : output.append("1010");immediate=true; break ;
             case "SW" :output.append("1011");immediate=true;break ;
-            default: System.out.println("Something went wrong!!"); break;
+            default: pw.println("Something went wrong!!"); break;
         }
         r=Integer.parseInt(x[1].substring(1,x[1].length()));
         output.append(String.format("%5s", Integer.toBinaryString(r)).replaceAll(" ", "0"));
@@ -106,7 +106,7 @@ public class HagaSa23aMIPS {
 //        int limit = 7 + (programLength-1)*2;
         for (int cycle=1 ; ; cycle++)
         {boolean Jump = false;
-            System.out.println("Clock Cycle : "+cycle);
+            pw.println("Clock Cycle : "+cycle);
             if(writeBack(toWB)) break;
             if(!fetch) memory(toMemory);
             toWB = toMemory;
@@ -124,10 +124,10 @@ public class HagaSa23aMIPS {
                 toBeExcuted=null;
                 toBeDecoded=null;
             }
-            System.out.println("________________________________________________");
+            pw.println("________________________________________________");
         }
-        System.out.println("The Stages are finished");
-        System.out.println("The Registers Content is :" +printReg());
+        pw.println("The Stages are finished");
+        pw.println("The Registers Content is :" +printReg());
         pw.println("The Memory Content is :");
         printMem();
     }
@@ -148,28 +148,28 @@ public class HagaSa23aMIPS {
 
     private static void memory(Instruction i) {
         if(i==null)return;
-        System.out.println("At Memory Stage : Instruction "+i.pc);
-        System.out.println("   Inputs: MemRead="+i.MemRead  + " ,MemWrite="+i.MemWrite  +" ,Data From ALU= " +i.ALUOutput + " ,Write Data ="+ i.valueR1 );
+        pw.println("At Memory Stage : Instruction "+i.pc);
+        pw.println("   Inputs: MemRead="+i.MemRead  + " ,MemWrite="+i.MemWrite  +" ,Data From ALU= " +i.ALUOutput + " ,Write Data ="+ i.valueR1 );
 
         if(i.MemRead)
             i.valueLW=Memory[i.ALUOutput];
 
         else if(i.MemWrite){
-            System.out.print("    Memory index " +i.ALUOutput+ " has changed from : "+Memory[i.ALUOutput]);
+            pw.print("    Memory index " +i.ALUOutput+ " has changed from : "+Memory[i.ALUOutput]);
             Memory[i.ALUOutput]=i.valueR1;
-            System.out.println(" to : "+Memory[i.ALUOutput]);
+            pw.println(" to : "+Memory[i.ALUOutput]);
         }
     }
     private static boolean writeBack(Instruction i) {
         if(i==null) return false;
-        System.out.println("At Write Back Stage : Instruction "+i.pc);
-        System.out.println("   Inputs: RegWrite="+i.RegWrite + " , MemToReg="+i.MemtoReg+" , DataFromMemory ="+i.valueLW +" ,Data From ALU= " +i.ALUOutput + " ,WriteReg ="+ i.r1  );
+        pw.println("At Write Back Stage : Instruction "+i.pc);
+        pw.println("   Inputs: RegWrite="+i.RegWrite + " , MemToReg="+i.MemtoReg+" , DataFromMemory ="+i.valueLW +" ,Data From ALU= " +i.ALUOutput + " ,WriteReg ="+ i.r1  );
 
         if(i.RegWrite){
-            System.out.print("    Register R" +i.r1+ " has changed from : "+Registers[i.r1]);
+            pw.print("    Register R" +i.r1+ " has changed from : "+Registers[i.r1]);
             if(i.r1!=0)
             Registers[i.r1]=i.MemtoReg? i.valueLW : i.ALUOutput;
-            System.out.println(" to : "+Registers[i.r1]);
+            pw.println(" to : "+Registers[i.r1]);
 
         }
 
@@ -183,22 +183,22 @@ public class HagaSa23aMIPS {
             return false;
         }
         execute =true;
-        System.out.println("At Execute Stage : Instruction "+i.pc);
-        System.out.println("   Inputs: Branch="+i.Branch + " , Zero Flag="+ zeroFlag +" , Jump ="+i.Jump+", PC ="+PC+", ALU output="+i.ALUOutput );
+        pw.println("At Execute Stage : Instruction "+i.pc);
+        pw.println("   Inputs: Branch="+i.Branch + " , Zero Flag="+ zeroFlag +" , Jump ="+i.Jump+", PC ="+PC+", ALU output="+i.ALUOutput );
 
         if(i.Branch && !zeroFlag){
-            System.out.println("   Branch Instruction");
-            System.out.print("   PC value changed from "+ PC );
+            pw.println("   Branch Instruction");
+            pw.print("   PC value changed from "+ PC );
             PC = i.pc + i.ALUOutput;
-            System.out.println(" to "+ PC );
+            pw.println(" to "+ PC );
             return true;
         }
         if (i.Jump){
-            System.out.println("   Jump Instruction");
-            System.out.println("   Address="+i.address);
-            System.out.print("   PC value changed from "+ PC );
+            pw.println("   Jump Instruction");
+            pw.println("   Address="+i.address);
+            pw.print("   PC value changed from "+ PC );
             PC = i.address;
-            System.out.println(" to "+ PC );
+            pw.println(" to "+ PC );
             return true;
         }
         return false;
@@ -206,8 +206,8 @@ public class HagaSa23aMIPS {
 
     private static void execute1(Instruction i) {
         if(i==null)return;
-        System.out.println("At Execute Stage : Instruction "+i.pc);
-        System.out.print("   Inputs: ALUControl="+i.opcode+" ,ALUSrc="+i.ALUSrc+
+        pw.println("At Execute Stage : Instruction "+i.pc);
+        pw.print("   Inputs: ALUControl="+i.opcode+" ,ALUSrc="+i.ALUSrc+
                 ", Read data 1="+i.valueR2+((!i.ALUSrc)?(" , Read data 2="+i.valueR3):(" ,immediate value="+i.immediate)));
 
         switch (i.opcode) {
@@ -228,24 +228,24 @@ public class HagaSa23aMIPS {
             case 7: // instruction.shiftRes = instruction.address << 2;//Jump
                 break;
             case 8: i.ALUOutput = i.valueR2 << i.shamt;//Shift left logical
-                System.out.print(", shift amount="+i.shamt);
+                pw.print(", shift amount="+i.shamt);
                 break;
             case 9: i.ALUOutput = i.valueR2 >>> i.shamt;//shift right logical
-                System.out.print(", shift amount="+i.shamt);
+                pw.print(", shift amount="+i.shamt);
                 break;
             case 10: case 11:i.ALUOutput = i.r2+i.immediate;//Load/store word
                 break;
             default:
         }
         execute=false;
-        System.out.println();
-        System.out.println("   Outputs: "+i.ALUOutput+", Zero Flag="+zeroFlag);
+        pw.println();
+        pw.println("   Outputs: "+i.ALUOutput+", Zero Flag="+zeroFlag);
     }
 
     private static void decode2(Instruction i) {
         if(i==null)return;
-        System.out.println("At Decode Stage : Instruction "+i.pc);
-        System.out.println("   Inputs: Opcode="+i.opcode);
+        pw.println("At Decode Stage : Instruction "+i.pc);
+        pw.println("   Inputs: Opcode="+i.opcode);
 
         switch (i.opcode){
             case 0:
@@ -262,23 +262,23 @@ public class HagaSa23aMIPS {
             case 10:i.ALUSrc=i.RegWrite=i.MemRead=i.MemtoReg=true;break;
             case 11:i.ALUSrc=i.MemWrite=true;break;
         }
-        System.out.print("   Outputs: ");
-        System.out.print(", Jump="+i.Jump);
-        System.out.print(", Branch="+i.Branch);
-        System.out.print(", MemRead="+i.MemRead);
-        System.out.print(", MemtoReg="+i.MemtoReg);
-        System.out.print(", ALUControl="+i.opcode);
-        System.out.print(", MemWrite="+i.MemWrite);
-        System.out.print(", ALUSrc="+i.ALUSrc);
-        System.out.print(", RegWrite="+i.RegWrite);
-        System.out.println();
+        pw.print("   Outputs: ");
+        pw.print(", Jump="+i.Jump);
+        pw.print(", Branch="+i.Branch);
+        pw.print(", MemRead="+i.MemRead);
+        pw.print(", MemtoReg="+i.MemtoReg);
+        pw.print(", ALUControl="+i.opcode);
+        pw.print(", MemWrite="+i.MemWrite);
+        pw.print(", ALUSrc="+i.ALUSrc);
+        pw.print(", RegWrite="+i.RegWrite);
+        pw.println();
         decode=true;
 
     }
 
     private static Instruction decode1(int i) {
         if(i==-1)return null;
-//        System.out.println("At Decode Stage : Instruction "+(PC-1));
+//        pw.println("At Decode Stage : Instruction "+(PC-1));
         int opcode;  // bits31:28
         int r1 ;      // bits27:23
         int r2 ;      // bit22:18
@@ -288,8 +288,8 @@ public class HagaSa23aMIPS {
         int address; // bits27:0
         int valueR2;
         int valueR3;
-        System.out.println("At Decode Stage : Instruction "+PC);
-        System.out.println("   Input: Instruction="+Integer.toBinaryString(i));
+        pw.println("At Decode Stage : Instruction "+PC);
+        pw.println("   Input: Instruction="+Integer.toBinaryString(i));
 
         opcode = i & 0b11110000000000000000000000000000 ;
         r1     = i & 0b00001111100000000000000000000000 ;
@@ -322,15 +322,15 @@ public class HagaSa23aMIPS {
 
         decode= false;
         Instruction inst = new Instruction(opcode,shamt,r1,r2,r3,imm,address,valueR1,valueR2,valueR3);
-        System.out.println("   Outputs: Opcode="+inst.opcode);
-        System.out.print("shift amount="+inst.opcode);
-        System.out.print(", Opcode="+inst.shamt);
-        System.out.print(", Read Register 1="+inst.r1);
-        System.out.print(", Read Register 2="+inst.r2);
-        System.out.print(", Register 3="+inst.r3);
-        System.out.print(", Immediate Value="+inst.immediate);
-        System.out.print(", Address="+inst.address);
-        System.out.println();
+        pw.println("   Outputs: Opcode="+inst.opcode);
+        pw.print("shift amount="+inst.opcode);
+        pw.print(", Opcode="+inst.shamt);
+        pw.print(", Read Register 1="+inst.r1);
+        pw.print(", Read Register 2="+inst.r2);
+        pw.print(", Register 3="+inst.r3);
+        pw.print(", Immediate Value="+inst.immediate);
+        pw.print(", Address="+inst.address);
+        pw.println();
          return inst;
 
 
@@ -340,9 +340,9 @@ public class HagaSa23aMIPS {
         if(PC==programLength)return -1;
         int res = Memory[PC];
         PC++;
-        System.out.println( "At Fetch Stage : Instruction "+ PC);
-        System.out.println("   PC is incremented to "+PC);
-        System.out.println("   Output : "+ Integer.toBinaryString(res));
+        pw.println( "At Fetch Stage : Instruction "+ PC);
+        pw.println("   PC is incremented to "+PC);
+        pw.println("   Output : "+ Integer.toBinaryString(res));
         return res;
     }
 
@@ -427,11 +427,11 @@ public class HagaSa23aMIPS {
 //	                }
 //            }
 //        for (int i =0;i<6;i++){
-//                System.out.println(String.format("%32s", Integer.toBinaryString(Memory[i])).replaceAll(" ", "0")+"   "+i);
+//                pw.println(String.format("%32s", Integer.toBinaryString(Memory[i])).replaceAll(" ", "0")+"   "+i);
 //            }
 //        }
 //        catch(IOException e) {
-//            System.out.println("FILE NOT FOUND");
+//            pw.println("FILE NOT FOUND");
 //        }
 //    }
 //    private static String getBinary(String [] x) {
@@ -456,7 +456,7 @@ public class HagaSa23aMIPS {
 //            case "SRL" : output.append("1001");sll=true; break ;
 //            case "LW" : output.append("1010");immediate=true; break ;
 //            case "SW" :output.append("1011");immediate=true;break ;
-//            default: System.out.println("Something went wrong!!"); break;
+//            default: pw.println("Something went wrong!!"); break;
 //        }
 //        r=Integer.parseInt(x[1].substring(1,x[1].length()));
 //        output.append(String.format("%5s", Integer.toBinaryString(r)).replaceAll(" ", "0"));
