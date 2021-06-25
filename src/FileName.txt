@@ -1,7 +1,6 @@
 add R1 R2 R3
-j aya
-lw R1 4(R7)
+j 0
+lw R1 R7 4
 add R1 R2 R3
-aya
 
 

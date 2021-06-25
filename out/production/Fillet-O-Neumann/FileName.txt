@@ -1,3 +1,0 @@
-Add R1 R3 R4
-Lw R21 30(R0)
-SW R1 0(R1)
