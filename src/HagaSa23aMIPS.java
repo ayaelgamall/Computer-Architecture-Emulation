@@ -195,6 +195,7 @@ public class HagaSa23aMIPS {
         if(i==null) return false;
         System.out.println("At Write Back Stage : Instruction "+i.pc);
         System.out.println("   Inputs: RegWrite="+i.RegWrite + " , MemToReg="+i.MemtoReg+" , DataFromMemory ="+i.valueLW +" ,Data From ALU= " +i.ALUOutput + " ,WriteReg ="+ i.r1 +"\n" );
+
         if(i.RegWrite){
             System.out.println("    Register R" +i.r1+ " has changed from : "+Registers[i.r1]);
             if(i.r1!=0)
@@ -208,50 +209,67 @@ public class HagaSa23aMIPS {
         return false;
     }
     private static boolean execute2(Instruction i) {
+
         if(i==null){
             return false;
         }
         execute =true;
+        System.out.println("At Execute 2 Stage : Instruction "+i.pc);
+        System.out.println("   Inputs: Branch="+i.Branch + " , Zero Flag="+ zeroFlag +" , Jump ="+i.Jump+", PC ="+PC+", ALU output="+i.ALUOutput );
+
         if(i.Branch && !zeroFlag){
+            System.out.println("   Branch Instruction");
+            System.out.print("   PC value changed from "+ PC );
             PC = i.pc + i.ALUOutput;
+            System.out.println(" to "+ PC );
             return true;
         }
         if (i.Jump){
+            System.out.println("   Jump Instruction");
+            System.out.println("   Address="+i.address);
+            System.out.print("   PC value changed from "+ PC );
             PC = i.address;
+            System.out.println(" to "+ PC );
             return true;
         }
         return false;
     }
 
-    private static void execute1(Instruction instruction) {
-        if(instruction==null)return;
-        switch (instruction.opcode) {
-            case 0: instruction.ALUOutput = instruction.valueR2 + instruction.valueR3; //ADD
+    private static void execute1(Instruction i) {
+        if(i==null)return;
+        System.out.println("At Execute 1 Stage : Instruction "+i.pc);
+        System.out.print("   Inputs: ALUControl="+i.opcode+",ALUSrc="+i.ALUSrc+
+                ", Read data 1="+i.valueR2+((!i.ALUSrc)?(", Read data 2="+i.valueR3):("immediate value="+i.immediate)));
+
+        switch (i.opcode) {
+            case 0: i.ALUOutput = i.valueR2 + i.valueR3; //ADD
                 break;
-            case 1: instruction.ALUOutput = instruction.valueR2 - instruction.valueR3; //SUB
+            case 1: i.ALUOutput = i.valueR2 - i.valueR3; //SUB
                 break;
-            case 2: instruction.ALUOutput = instruction.valueR2 * instruction.immediate;//MULT imm
+            case 2: i.ALUOutput = i.valueR2 * i.immediate;//MULT imm
                 break;
-            case 3: instruction.ALUOutput = instruction.valueR2 + instruction.immediate;//ADD imm
+            case 3: i.ALUOutput = i.valueR2 + i.immediate;//ADD imm
                 break;
-            case 4: zeroFlag = (0 == (instruction.valueR2 - instruction.valueR1));//bne
+            case 4: zeroFlag = (0 == (i.valueR2 - i.valueR1));//bne
                 break;
-            case 5: instruction.ALUOutput = instruction.valueR2 & instruction.immediate;//AND imm
+            case 5: i.ALUOutput = i.valueR2 & i.immediate;//AND imm
                 break;
-            case 6: instruction.ALUOutput = instruction.valueR2 | instruction.immediate;//OR imm
+            case 6: i.ALUOutput = i.valueR2 | i.immediate;//OR imm
                 break;
             case 7: // instruction.shiftRes = instruction.address << 2;//Jump
                 break;
-            case 8: instruction.ALUOutput = instruction.valueR2 << instruction.shamt;//Shift left logical
+            case 8: i.ALUOutput = i.valueR2 << i.shamt;//Shift left logical
+                System.out.print(", shift amount="+i.shamt);
                 break;
-            case 9: instruction.ALUOutput = instruction.valueR2 >>> instruction.shamt;//shift right logical
+            case 9: i.ALUOutput = i.valueR2 >>> i.shamt;//shift right logical
+                System.out.print(", shift amount="+i.shamt);
                 break;
-            case 10: case 11:instruction.ALUOutput = instruction.r2+instruction.immediate;//Load/store word
+            case 10: case 11:i.ALUOutput = i.r2+i.immediate;//Load/store word
                 break;
             default:
-
         }
         execute=false;
+    System.out.println("Outputs: "+i.ALUOutput+", Zero Flag="+zeroFlag);
     }
 
     private static void decode2(Instruction i) {
