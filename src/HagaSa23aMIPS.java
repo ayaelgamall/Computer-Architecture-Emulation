@@ -13,7 +13,7 @@ public class HagaSa23aMIPS {
     static boolean execute =true;
     static boolean zeroFlag;
     static  PrintWriter pw;
-    static ArrayList<Integer>a;
+//    static ArrayList<Integer>a;
 
     public static void main (String[] args) throws FileNotFoundException {
         pw = new PrintWriter("Printing1.txt");
@@ -21,7 +21,7 @@ public class HagaSa23aMIPS {
         runProgram();
         pw.flush();
         pw.close();
-        a=new ArrayList();
+//        a=new ArrayList();
     }
     private static void Assembler(String Name) {
         Memory = new int[2048];
