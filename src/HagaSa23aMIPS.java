@@ -137,7 +137,7 @@ public class HagaSa23aMIPS {
         {boolean Jump = false;
             System.out.println("Clock Cycle : "+cycle);
             if(writeBack(toWB)) break;
-            memory(toMemory);
+            if(!fetch) memory(toMemory);
             toWB = toMemory;
             if(execute) execute1(toBeExcuted);
             else{
