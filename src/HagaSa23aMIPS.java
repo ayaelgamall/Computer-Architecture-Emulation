@@ -15,12 +15,11 @@ public class HagaSa23aMIPS {
     static boolean excute=false;
     static boolean zeroFlag;
     public static void main (String[] args){
-        Assembler("program1");
+        Assembler("FileName");
         runProgram();
     }
      private static void Assembler(String Name) {
         Memory = new int[2048];
-        int programLength=0;
         Registers=new int[32];
         PC=0;//??
         String fileName = "src/" + Name+".txt";
@@ -32,6 +31,7 @@ public class HagaSa23aMIPS {
                 stringBuilder.append(line);
                 if (!(line.equals(""))) {
                     Memory[programLength++]=(int)Long.parseLong(getBinary(line.split(" ")),2);
+//                    System.out.println(programLength+" len");
                 }
         }
             reader.close();
@@ -98,19 +98,19 @@ public class HagaSa23aMIPS {
         Instruction toMemory = null;
         Instruction toWB = null;
         int limit = 7+ (programLength-1)*2;
-        for (int cycle=1 ;; cycle++)
+        for (int cycle=1 ; cycle<=limit; cycle++)
         {boolean Jump = false;
             System.out.println("Clock Cycle : "+cycle);
-            if(  writeBack(toWB))break;
+            if(writeBack(toWB))break;
             memory(toMemory);
-            toWB=toMemory;
-            if( excute) execute1(toBeExcuted);
+            toWB = toMemory;
+            if(excute) execute1(toBeExcuted);
             else{
                Jump =execute2(toBeExcuted);
                 toMemory=toBeExcuted;
             }
-            if( decode) toBeDecoded=decode1(instruction);
-            else{ decode2(toBeDecoded);toBeExcuted=toBeDecoded;}
+            if(decode) toBeDecoded=decode1(instruction);
+            else{decode2(toBeDecoded);toBeExcuted=toBeDecoded;}
 
             instruction= fetch?  fetch():-1 ;fetch=!fetch;
             if(Jump){
