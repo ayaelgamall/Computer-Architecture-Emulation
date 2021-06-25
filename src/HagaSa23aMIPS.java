@@ -362,9 +362,10 @@ public class HagaSa23aMIPS {
 
     private static int fetch() {
         if(PC==programLength)return -1;
+        System.out.println("At Fetch Stage : Instruction "+PC);
         int res = Memory[PC];
         PC++;
-        System.out.println();
+        System.out.println("   PC is incremented to "+PC);
         return res;
     }
 
