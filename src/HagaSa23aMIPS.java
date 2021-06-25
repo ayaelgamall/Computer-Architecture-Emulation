@@ -262,22 +262,22 @@ public class HagaSa23aMIPS {
             case 11:i.ALUSrc=i.MemWrite=true;break;
         }
         System.out.print("   Outputs: ");
-        System.out.print(",Jump="+i.Jump);
-        System.out.print(",Branch="+i.Branch);
-        System.out.print(",MemRead="+i.MemRead);
-        System.out.print(",MemtoReg="+i.MemtoReg);
-        System.out.print(",ALUControl="+i.opcode);
-        System.out.print(",MemWrite="+i.MemWrite);
-        System.out.print(",ALUSrc="+i.ALUSrc);
-        System.out.print(",RegWrite="+i.RegWrite);
+        System.out.print(", Jump="+i.Jump);
+        System.out.print(", Branch="+i.Branch);
+        System.out.print(", MemRead="+i.MemRead);
+        System.out.print(", MemtoReg="+i.MemtoReg);
+        System.out.print(", ALUControl="+i.opcode);
+        System.out.print(", MemWrite="+i.MemWrite);
+        System.out.print(", ALUSrc="+i.ALUSrc);
+        System.out.print(", RegWrite="+i.RegWrite);
         System.out.println();
         decode=true;
 
     }
 
     private static Instruction decode1(int i) {
-        System.out.println("At Decode 1 Stage : Instruction "+(PC-1));
         if(i==-1)return null;
+        System.out.println("At Decode 1 Stage : Instruction "+(PC-1));
         int opcode;  // bits31:28
         int r1 ;      // bits27:23
         int r2 ;      // bit22:18
@@ -323,12 +323,12 @@ public class HagaSa23aMIPS {
         Instruction inst = new Instruction(opcode,shamt,r1,r2,r3,imm,address,valueR1,valueR2,valueR3);
         System.out.println("   Outputs: Opcode="+inst.opcode);
         System.out.print("shift amount="+inst.opcode);
-        System.out.print("Opcode="+inst.shamt);
-        System.out.print("Read Register 1="+inst.r1);
-        System.out.print("Read Register 2="+inst.r2);
-        System.out.print("Register 3="+inst.r3);
-        System.out.print("Immediate Value="+inst.immediate);
-        System.out.print("Address="+inst.address);
+        System.out.print(", Opcode="+inst.shamt);
+        System.out.print(", Read Register 1="+inst.r1);
+        System.out.print(", Read Register 2="+inst.r2);
+        System.out.print(", Register 3="+inst.r3);
+        System.out.print(", Immediate Value="+inst.immediate);
+        System.out.print(", Address="+inst.address);
         System.out.println();
          return inst;
 
