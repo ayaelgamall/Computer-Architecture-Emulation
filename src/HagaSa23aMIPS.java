@@ -1,6 +1,5 @@
 
 import java.io.*;
-import java.util.Arrays;
 import java.util.ArrayList;
 public class HagaSa23aMIPS {
     static int[] Memory;
@@ -9,7 +8,7 @@ public class HagaSa23aMIPS {
     static final int R0=0;
     static int programLength=0;
     static boolean decode=true;
-    static boolean fetch=true;
+    static boolean odd =true;
     static boolean execute =true;
     static boolean zeroFlag;
     static  PrintWriter pw;
@@ -107,8 +106,9 @@ public class HagaSa23aMIPS {
         for (int cycle=1 ; ; cycle++)
         {boolean Jump = false;
             pw.println("Clock Cycle : "+cycle);
-            if(writeBack(toWB)) break;
-            if(!fetch) memory(toMemory);
+            if(odd)
+             if(writeBack(toWB)) break;
+            if(!odd) memory(toMemory);
             toWB = toMemory;
             if(execute) execute1(toBeExcuted);
             else{
@@ -118,7 +118,8 @@ public class HagaSa23aMIPS {
             if(decode) toBeDecoded=decode1(instruction);
             else{decode2(toBeDecoded);toBeExcuted=toBeDecoded;}
 
-            instruction= fetch?  fetch():-1 ;fetch=!fetch;
+            instruction= odd ?  fetch():-1 ;
+            odd =!odd;
             if(Jump){
                 instruction=-1;
                 toBeExcuted=null;
@@ -126,6 +127,8 @@ public class HagaSa23aMIPS {
             }
             pw.println("________________________________________________");
         }
+         pw.println("________________________________________________");
+
         pw.println("The Stages are finished");
         pw.println("The Registers Content is :" +printReg());
         pw.println("The Memory Content is :");
