@@ -270,7 +270,7 @@ public class HagaSa23aMIPS {
         }
         execute=false;
         System.out.println();
-        System.out.println("Outputs: "+i.ALUOutput+", Zero Flag="+zeroFlag);
+        System.out.println("   Outputs: "+i.ALUOutput+", Zero Flag="+zeroFlag);
     }
 
     private static void decode2(Instruction i) {
