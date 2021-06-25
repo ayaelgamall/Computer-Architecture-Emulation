@@ -16,7 +16,7 @@ public class HagaSa23aMIPS {
 //    static ArrayList<Integer>a;
 
     public static void main (String[] args) throws FileNotFoundException {
-        pw = new PrintWriter("Printing1.txt");
+        pw = new PrintWriter("NormalPrinting.txt");
         Assembler("Normal");
         runProgram();
         pw.flush();
@@ -73,7 +73,9 @@ public class HagaSa23aMIPS {
         r=Integer.parseInt(x[2].substring(1,x[2].length()));
         output.append(String.format("%5s", Integer.toBinaryString(r)).replaceAll(" ", "0"));
         if (immediate) {
-            output.append(String.format("%18s", Integer.toBinaryString(Integer.parseInt(x[3]))).replaceAll(" ", "0"));
+            String immed =String.format("%18s", Integer.toBinaryString(Integer.parseInt(x[3]))).replaceAll(" ", "0");
+            immed=immed.substring(immed.length()-18);
+            output.append(immed);
 //            if (Integer.parseInt(x[3])<0){
 //                a.add((int)Long.parseLong(output.toString()));
 //            }
