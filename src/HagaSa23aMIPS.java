@@ -207,8 +207,8 @@ public class HagaSa23aMIPS {
     private static void execute1(Instruction i) {
         if(i==null)return;
         pw.println("At Execute Stage : Instruction "+i.pc);
-        pw.print("   Inputs: ALUControl="+i.opcode+" ,ALUSrc="+i.ALUSrc+
-                ", Read data 1="+i.valueR2+((!i.ALUSrc)?(" , Read data 2="+i.valueR3):(" ,immediate value="+i.immediate)));
+        pw.print("   Inputs: ALUControl="+i.opcode+" , ALUSrc="+i.ALUSrc+
+                ", Read data 1="+i.valueR2+((!i.ALUSrc)?(" , Read data 2="+i.valueR3):(" , immediate value="+i.immediate)));
 
         switch (i.opcode) {
             case 0: i.ALUOutput = i.valueR2 + i.valueR3; //ADD
@@ -322,8 +322,8 @@ public class HagaSa23aMIPS {
 
         decode= false;
         Instruction inst = new Instruction(opcode,shamt,r1,r2,r3,imm,address,valueR1,valueR2,valueR3);
-        pw.println("   Outputs: Opcode="+inst.opcode);
-        pw.print("shift amount="+inst.opcode);
+        pw.print("   Outputs: Opcode="+inst.opcode);
+        pw.print(", shift amount="+inst.opcode);
         pw.print(", Opcode="+inst.shamt);
         pw.print(", Read Register 1="+inst.r1);
         pw.print(", Read Register 2="+inst.r2);
