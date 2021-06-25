@@ -181,6 +181,7 @@ public class HagaSa23aMIPS {
     }
 
     private static void execute1(Instruction instruction) {
+        if(instruction==null)return;
         switch (instruction.opcode) {
             case 0: instruction.ALUOutput = instruction.valueR2 + instruction.valueR3; //ADD
                 break;
@@ -211,6 +212,7 @@ public class HagaSa23aMIPS {
     }
 
     private static void decode2(Instruction i) {
+        if(i==null)return;
         switch (i.opcode){
             case 0:
             case 1:
