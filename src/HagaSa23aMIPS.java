@@ -130,9 +130,9 @@ public class HagaSa23aMIPS {
         }
          pw.println("________________________________________________");
 
-        pw.println("The Stages are finished");
-        pw.println("The Registers Content is :" +printReg());
-        pw.println("The Memory Content is :");
+        pw.println("The Stages are finished\n");
+        pw.println("The Registers Content is :\n" +printReg());
+        pw.println("\nThe Memory Content is :");
         printMem();
     }
 
@@ -145,8 +145,8 @@ public class HagaSa23aMIPS {
     private static String printReg() {
         StringBuilder s = new StringBuilder("R0=" + R0);
         for (int i = 1; i < Registers.length; i++)
-            s.append(" , R").append(i).append("=").append(Registers[i]);
-        s.append(" , PC=" );s.append(PC);
+            s.append("\nR").append(i).append("=").append(Registers[i]);
+        s.append("\nPC=" );s.append(PC);
         return s.toString();
     }
 
