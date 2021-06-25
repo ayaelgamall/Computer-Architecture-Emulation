@@ -98,7 +98,7 @@ public class HagaSa23aMIPS {
         Instruction toMemory = null;
         Instruction toWB = null;
         int limit = 7+ (programLength-1)*2;
-        for (int cycle=1 ;cycle<limit; cycle++)
+        for (int cycle=1 ;; cycle++)
         {
             System.out.println("Clock Cycle : "+cycle);
             if(  writeBack(toWB))break;
