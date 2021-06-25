@@ -235,7 +235,8 @@ public class HagaSa23aMIPS {
             default:
         }
         execute=false;
-    System.out.println("Outputs: "+i.ALUOutput+", Zero Flag="+zeroFlag);
+        System.out.println();
+        System.out.println("   Outputs: "+i.ALUOutput+", Zero Flag="+zeroFlag);
     }
 
     private static void decode2(Instruction i) {
@@ -274,8 +275,8 @@ public class HagaSa23aMIPS {
 
     }
 
-    private static Instruction decode1(int instruction) {
-        if(instruction==-1)return null;
+    private static Instruction decode1(int i) {
+        if(i==-1)return null;
         int opcode;  // bits31:28
         int r1 ;      // bits27:23
         int r2 ;      // bit22:18
@@ -285,14 +286,15 @@ public class HagaSa23aMIPS {
         int address; // bits27:0
         int valueR2;
         int valueR3;
+        System.out.println("   Input: Instruction="+Integer.toBinaryString(i));
 
-        opcode = instruction & 0b11110000000000000000000000000000 ;
-        r1     = instruction & 0b00001111100000000000000000000000 ;
-        r2     = instruction & 0b00000000011111000000000000000000 ;
-        r3     = instruction & 0b00000000000000111110000000000000 ;
-        shamt  = instruction & 0b00000000000000000000111111111111 ;
-        imm =    instruction & 0b00000000000000111111111111111111 ;
-        address =instruction & 0b00001111111111111111111111111111 ;
+        opcode = i & 0b11110000000000000000000000000000 ;
+        r1     = i & 0b00001111100000000000000000000000 ;
+        r2     = i & 0b00000000011111000000000000000000 ;
+        r3     = i & 0b00000000000000111110000000000000 ;
+        shamt  = i & 0b00000000000000000000111111111111 ;
+        imm =    i & 0b00000000000000111111111111111111 ;
+        address =i & 0b00001111111111111111111111111111 ;
         int pcBits = PC & 0b11110000000000000000000000000000;
 
         if(opcode<0) opcode= (int) ((2 * (long) Integer.MAX_VALUE + 2 + opcode) >>28);
@@ -316,7 +318,18 @@ public class HagaSa23aMIPS {
         valueR3 = Registers[r3] ;
 
         decode= false;
-        return new Instruction(opcode,shamt,r1,r2,r3,imm,address,valueR1,valueR2,valueR3);
+        Instruction inst = new Instruction(opcode,shamt,r1,r2,r3,imm,address,valueR1,valueR2,valueR3);
+        System.out.println("At Decode 1 Stage : Instruction "+inst.pc);
+        System.out.println("   Outputs: Opcode="+inst.opcode);
+        System.out.print("shift amount="+inst.opcode);
+        System.out.print("Opcode="+inst.shamt);
+        System.out.print("Read Register 1="+inst.r1);
+        System.out.print("Read Register 2="+inst.r2);
+        System.out.print("Register 3="+inst.r3);
+        System.out.print("Immediate Value="+inst.immediate);
+        System.out.print("Address="+inst.address);
+        System.out.println();
+         return inst;
 
 
     }
