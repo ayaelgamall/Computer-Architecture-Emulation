@@ -99,28 +99,25 @@ public class HagaSa23aMIPS {
         Instruction toWB = null;
         int limit = 7+ (programLength-1)*2;
         for (int cycle=1 ;; cycle++)
-        {
+        {boolean Jump = false;
             System.out.println("Clock Cycle : "+cycle);
             if(  writeBack(toWB))break;
             memory(toMemory);
             toWB=toMemory;
             if( excute) execute1(toBeExcuted);
             else{
-                boolean Jump=execute2(toBeExcuted);
-                if(Jump){
-                    fetch=true;
-                    toBeExcuted=null;
-                    toBeDecoded=null;
-                    toMemory = toBeExcuted;
-                    continue;
-                }
+               Jump =execute2(toBeExcuted);
                 toMemory=toBeExcuted;
             }
             if( decode) toBeDecoded=decode1(instruction);
             else{ decode2(toBeDecoded);toBeExcuted=toBeDecoded;}
 
             instruction= fetch?  fetch():-1 ;fetch=!fetch;
-
+            if(Jump){
+                instruction=-1;
+                toBeExcuted=null;
+                toBeDecoded=null;
+            }
         }
         System.out.println("The Stages are finished");
         System.out.println("The Registers Content is :" +printReg());
