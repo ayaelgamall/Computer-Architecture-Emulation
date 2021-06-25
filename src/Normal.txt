@@ -1,0 +1,10 @@
+ADDI R1  R0  6 // Load r e g i s t e r $ t1 with val u e 6 : t1 = 0 + 6
+ADDI R2  R0  5 # Load r e g i s t e r $ t2 with val u e 5 : t2 = 0 + 5
+ADDI R4   R0  7 # Load r e g i s t e r $ t4 with val u e 7 : t4 = 0 + 4
+ADDI R5  R0  2 # Load r e g i s t e r $ t5 with val u e 2 : t5 = 0 + 5
+SUB R6   R1  R2 # t0 = g − h = t1 − t2
+SUB  R3   R4  R5 # t3 = i − j = t4 − t5
+ADD  R8   R6   R3 # s0 = f = ( g − h ) + ( i − j ) = t0 + t3
+ADD R11  R0 -5
+ADD R12  R0  -11
+SW R8 R0  1024   //=7
