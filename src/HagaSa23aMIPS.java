@@ -13,13 +13,15 @@ public class HagaSa23aMIPS {
     static boolean execute =true;
     static boolean zeroFlag;
     static  PrintWriter pw;
+//    static ArrayList<Integer>a;
 
     public static void main (String[] args) throws FileNotFoundException {
-        pw = new PrintWriter("Printing1.txt");
+        pw = new PrintWriter("NormalPrinting.txt");
         Assembler("Normal");
         runProgram();
         pw.flush();
         pw.close();
+//        a=new ArrayList();
     }
     private static void Assembler(String Name) {
         Memory = new int[2048];
@@ -31,7 +33,6 @@ public class HagaSa23aMIPS {
             StringBuilder stringBuilder = new StringBuilder();
             String line = null;
             ArrayList<String[]> assm= new ArrayList<>();
-//	            String [] labels= new String [1024];
             while ((line = reader.readLine()) != null) {
                 stringBuilder.append(line);
                 if (!(line.equals(""))) {
@@ -39,33 +40,9 @@ public class HagaSa23aMIPS {
                 }
             }
             reader.close();
-//	            for (int i =0;i<assm.size();i++){
-//	                    if (assm.get(i)[0].equalsIgnoreCase("BNE")){
-//	                        labels[i] = assm.get(i)[3];
-//	                    }
-//	                    if (assm.get(i)[0].equalsIgnoreCase("J")){
-//	                        labels[i] = assm.get(i)[1];
-//	                    }
-//	            }
             for (int i =0;i< assm.size();i++){
-//	                if (!(assm.get(i)[0].equalsIgnoreCase("ADD")||assm.get(i)[0].equalsIgnoreCase("SUB")||assm.get(i)[0].equalsIgnoreCase("MULI")||assm.get(i)[0].equalsIgnoreCase("BNE")||assm.get(i)[0].equalsIgnoreCase("ANDI")||assm.get(i)[0].equalsIgnoreCase("ORI")||assm.get(i)[0].equalsIgnoreCase("J")||assm.get(i)[0].equalsIgnoreCase("SLL")||assm.get(i)[0].equalsIgnoreCase("SRL")||assm.get(i)[0].equalsIgnoreCase("LW")||assm.get(i)[0].equalsIgnoreCase("SW"))){
-//	                        for (int j=0;j<labels.length;j++){
-//	                            if (labels[j]!=null){
-//	                                if (labels[j].equals(assm.get(i)[0])){
-//
-//	                                if (Memory[j]==7){
-//	                                    Memory[j]=Integer.parseInt(String.format("%4s", Integer.toBinaryString(Memory[j])).replaceAll(" ", "0")+""+String.format("%28s", Integer.toBinaryString(programLength)).replaceAll(" ", "0"),2);
-//	                                }
-//	                                else{
-//	                                    Memory[j]=Integer.parseInt(String.format("%14s", Integer.toBinaryString(Memory[j])).replaceAll(" ", "0")+""+String.format("%18s", Integer.toBinaryString(programLength-j)).replaceAll(" ", "0"),2);
-//	}}}}}
-//	                else {
-                Memory[programLength++]=(int)Long.parseLong(getBinary(assm.get(i)),2);
-//	                }
+	            Memory[programLength++]=(int)Long.parseLong(getBinary(assm.get(i)),2);
             }
-//        for (int i =0;i<6;i++){
-//                System.out.println(String.format("%32s", Integer.toBinaryString(Memory[i])).replaceAll(" ", "0")+"   "+i);
-//            }
         }
         catch(IOException e) {
             System.out.println("FILE NOT FOUND");
@@ -75,11 +52,7 @@ public class HagaSa23aMIPS {
         StringBuilder output = new StringBuilder();
         boolean immediate=false;
         boolean sll=false;
-//	        boolean mem=false;
         int r;
-//	        boolean branch= false;
-//	        if ((x[0].toUpperCase()).equals("BNE"))
-//	            branch=true;
         switch(x[0].toUpperCase()) {
             case "ADD" : output.append("0000"); break ;
             case "SUB" : output.append("0001"); break ;
@@ -97,29 +70,24 @@ public class HagaSa23aMIPS {
         }
         r=Integer.parseInt(x[1].substring(1,x[1].length()));
         output.append(String.format("%5s", Integer.toBinaryString(r)).replaceAll(" ", "0"));
-//	        if (mem) {
-//	            String imm="";
-//	            for (int i =0;i<x[2].length();i++) {
-//	                if(("(").equals(x[2].charAt(i)+"")) {
-//	                    output.append(String.format("%5s", Integer.toBinaryString(Integer.parseInt(x[2].substring(i+2,x[2].length()-1)))).replaceAll(" ", "0"));
-//	                    output.append(String.format("%18s", Integer.toBinaryString(Integer.parseInt(imm))).replaceAll(" ", "0"));
-//	                    return output.toString();
-//	                }
-//	                imm+=x[2].charAt(i)+"";
-//	            }}
         r=Integer.parseInt(x[2].substring(1,x[2].length()));
         output.append(String.format("%5s", Integer.toBinaryString(r)).replaceAll(" ", "0"));
         if (immediate) {
-//	            if (branch){
-//	                return output.toString();
-//	            }
-            output.append(String.format("%18s", Integer.toBinaryString(Integer.parseInt(x[3]))).replaceAll(" ", "0"));
+            String immed =String.format("%18s", Integer.toBinaryString(Integer.parseInt(x[3]))).replaceAll(" ", "0");
+            immed=immed.substring(immed.length()-18);
+            output.append(immed);
+//            if (Integer.parseInt(x[3])<0){
+//                a.add((int)Long.parseLong(output.toString()));
+//            }
             return output.toString();
         }
         else {
             if (sll) {
                 output.append("00000");
                 output.append(String.format("%13s", Integer.toBinaryString(Integer.parseInt(x[3]))).replaceAll(" ", "0"));
+//                if (Integer.parseInt(x[3])<0){
+//                    a.add((int)Long.parseLong(output.toString()));
+//                }
                 return output.toString();
             }
             r=Integer.parseInt(x[3].substring(1,x[3].length()));
@@ -333,6 +301,14 @@ public class HagaSa23aMIPS {
 
         if(opcode<0) opcode= (int) ((2 * (long) Integer.MAX_VALUE + 2 + opcode) >>28);
         else opcode = opcode >> 28 ;
+        if (opcode!=10&&opcode!=11) {
+                if (String.format("%18s", Integer.toBinaryString(imm).replaceAll(" ", "0")).charAt(0)=='1') {
+                    imm= (int)Long.parseLong(String.format("%14s", Integer.toBinaryString(1)).replaceAll(" ", "1")+String.format("%18s", Integer.toBinaryString(imm).replaceAll(" ", "0")),2);
+                }
+        }
+//        if (a.contains(instruction)) {
+//            imm*=-1;
+//        }
 
         r1 = r1 >> 23;
         r2 = r2 >> 18;
@@ -408,4 +384,115 @@ public class HagaSa23aMIPS {
 
         }
     }
+
+
+
+
+//    private static void Assembler(String Name) {
+//        Memory = new int[2048];
+//        Registers=new int[32];
+//        PC=0;//??
+//        String fileName = "src/" + Name+".txt";
+//        try {
+//            BufferedReader reader = new BufferedReader(new FileReader(fileName));
+//            StringBuilder stringBuilder = new StringBuilder();
+//            String line = null;
+//            ArrayList<String[]> assm= new ArrayList<>();
+//            String [] labels= new String [1024];
+//            while ((line = reader.readLine()) != null) {
+//                stringBuilder.append(line);
+//                if (!(line.equals(""))) {
+//                    assm.add(line.split(" "));
+//                }
+//            }
+//            reader.close();
+//	            for (int i =0;i<assm.size();i++){
+//	                    if (assm.get(i)[0].equalsIgnoreCase("BNE")){
+//	                        labels[i] = assm.get(i)[3];
+//	                    }
+//	                    if (assm.get(i)[0].equalsIgnoreCase("J")){
+//	                        labels[i] = assm.get(i)[1];
+//	                    }
+//	            }
+//            for (int i =0;i< assm.size();i++){
+//	                if (!(assm.get(i)[0].equalsIgnoreCase("ADD")||assm.get(i)[0].equalsIgnoreCase("SUB")||assm.get(i)[0].equalsIgnoreCase("MULI")||assm.get(i)[0].equalsIgnoreCase("BNE")||assm.get(i)[0].equalsIgnoreCase("ANDI")||assm.get(i)[0].equalsIgnoreCase("ORI")||assm.get(i)[0].equalsIgnoreCase("J")||assm.get(i)[0].equalsIgnoreCase("SLL")||assm.get(i)[0].equalsIgnoreCase("SRL")||assm.get(i)[0].equalsIgnoreCase("LW")||assm.get(i)[0].equalsIgnoreCase("SW"))){
+//	                        for (int j=0;j<labels.length;j++){
+//	                            if (labels[j]!=null){
+//	                                if (labels[j].equals(assm.get(i)[0])){
+//
+//	                                if (Memory[j]==7){
+//	                                    Memory[j]=Integer.parseInt(String.format("%4s", Integer.toBinaryString(Memory[j])).replaceAll(" ", "0")+""+String.format("%28s", Integer.toBinaryString(programLength)).replaceAll(" ", "0"),2);
+//	                                }
+//	                                else{
+//	                                    Memory[j]=Integer.parseInt(String.format("%14s", Integer.toBinaryString(Memory[j])).replaceAll(" ", "0")+""+String.format("%18s", Integer.toBinaryString(programLength-j)).replaceAll(" ", "0"),2);
+//	}}}}}
+//	                else {
+//                Memory[programLength++]=(int)Long.parseLong(getBinary(assm.get(i)),2);
+//	                }
+//            }
+//        for (int i =0;i<6;i++){
+//                System.out.println(String.format("%32s", Integer.toBinaryString(Memory[i])).replaceAll(" ", "0")+"   "+i);
+//            }
+//        }
+//        catch(IOException e) {
+//            System.out.println("FILE NOT FOUND");
+//        }
+//    }
+//    private static String getBinary(String [] x) {
+//        StringBuilder output = new StringBuilder();
+//        boolean immediate=false;
+//        boolean sll=false;
+//        boolean mem=false;
+//        int r;
+//	        boolean branch= false;
+//	        if ((x[0].toUpperCase()).equals("BNE"))
+//	            branch=true;
+//        switch(x[0].toUpperCase()) {
+//            case "ADD" : output.append("0000"); break ;
+//            case "SUB" : output.append("0001"); break ;
+//            case "MULI" : output.append("0010"); immediate=true; break ;
+//            case "ADDI" : output.append("0011"); immediate=true;break ;
+//            case "BNE" : output.append("0100"); immediate=true;break ;
+//            case "ANDI" : output.append("0101");immediate=true; break ;
+//            case "ORI" : output.append("0110"); immediate=true;break ;
+//            case "J" : output.append("0111"); output.append(String.format("%28s", Integer.toBinaryString(Integer.parseInt(x[1]))).replaceAll(" ", "0"));return output.toString() ;
+//            case "SLL" : output.append("1000"); sll=true; break ;
+//            case "SRL" : output.append("1001");sll=true; break ;
+//            case "LW" : output.append("1010");immediate=true; break ;
+//            case "SW" :output.append("1011");immediate=true;break ;
+//            default: System.out.println("Something went wrong!!"); break;
+//        }
+//        r=Integer.parseInt(x[1].substring(1,x[1].length()));
+//        output.append(String.format("%5s", Integer.toBinaryString(r)).replaceAll(" ", "0"));
+//	        if (mem) {
+//	            String imm="";
+//	            for (int i =0;i<x[2].length();i++) {
+//	                if(("(").equals(x[2].charAt(i)+"")) {
+//	                    output.append(String.format("%5s", Integer.toBinaryString(Integer.parseInt(x[2].substring(i+2,x[2].length()-1)))).replaceAll(" ", "0"));
+//	                    output.append(String.format("%18s", Integer.toBinaryString(Integer.parseInt(imm))).replaceAll(" ", "0"));
+//	                    return output.toString();
+//	                }
+//	                imm+=x[2].charAt(i)+"";
+//	            }}
+//        r=Integer.parseInt(x[2].substring(1,x[2].length()));
+//        output.append(String.format("%5s", Integer.toBinaryString(r)).replaceAll(" ", "0"));
+//        if (immediate) {
+//	            if (branch){
+//	                return output.toString();
+//	            }
+//            output.append(String.format("%18s", Integer.toBinaryString(Integer.parseInt(x[3]))).replaceAll(" ", "0"));
+//            return output.toString();
+//        }
+//        else {
+//            if (sll) {
+//                output.append("00000");
+//                output.append(String.format("%13s", Integer.toBinaryString(Integer.parseInt(x[3]))).replaceAll(" ", "0"));
+//                return output.toString();
+//            }
+//            r=Integer.parseInt(x[3].substring(1,x[3].length()));
+//            output.append(String.format("%5s", Integer.toBinaryString(r)).replaceAll(" ", "0"));
+//            output.append("0000000000000");
+//            return output.toString();
+//        }
+//    }
 }
