@@ -229,7 +229,7 @@ public class HagaSa23aMIPS {
         if(i==null)return;
         System.out.println("At Execute 1 Stage : Instruction "+i.pc);
         System.out.print("   Inputs: ALUControl="+i.opcode+",ALUSrc="+i.ALUSrc+
-                ", Read data 1="+i.valueR2+((i.ALUSrc)?(", Read data 2="+i.valueR3):("immediate value="+i.immediate)));
+                ", Read data 1="+i.valueR2+((!i.ALUSrc)?(", Read data 2="+i.valueR3):("immediate value="+i.immediate)));
 
         switch (i.opcode) {
             case 0: i.ALUOutput = i.valueR2 + i.valueR3; //ADD
