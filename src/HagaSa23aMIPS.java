@@ -12,10 +12,10 @@ public class HagaSa23aMIPS {
     static int programLength=0;
     static boolean decode=false;
     static boolean fetch=true;
-    static boolean excute=false;
+    static boolean execute =false;
     static boolean zeroFlag;
     public static void main (String[] args){
-        Assembler("FileName");
+        Assembler("Normal");
         runProgram();
     }
     private static void Assembler(String Name) {
@@ -139,7 +139,7 @@ public class HagaSa23aMIPS {
             if(writeBack(toWB)) break;
             memory(toMemory);
             toWB = toMemory;
-            if(excute) execute1(toBeExcuted);
+            if(!execute) execute1(toBeExcuted);
             else{
                Jump =execute2(toBeExcuted);
                 toMemory=toBeExcuted;
@@ -209,7 +209,7 @@ public class HagaSa23aMIPS {
             PC = i.address;
             return true;
         }
-        excute=false;
+        execute =false;
         return false;
     }
 
