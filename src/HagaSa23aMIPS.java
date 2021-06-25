@@ -250,7 +250,7 @@ public class HagaSa23aMIPS {
             case 0:
             case 1:
             case 9:
-            case 8:i.RegDst =i.RegWrite=true;
+            case 8:i.RegWrite=true;
                 break;
             case 2:
             case 3:
@@ -262,10 +262,8 @@ public class HagaSa23aMIPS {
             case 11:i.ALUSrc=i.MemWrite=true;break;
         }
         System.out.print("   Outputs: ");
-        System.out.print(",RegDest="+i.RegDst);
         System.out.print(",Jump="+i.Jump);
         System.out.print(",Branch="+i.Branch);
-        System.out.print(",RegDest="+i.RegDst);
         System.out.print(",MemRead="+i.MemRead);
         System.out.print(",MemtoReg="+i.MemtoReg);
         System.out.print(",ALUControl="+i.opcode);
@@ -341,7 +339,8 @@ public class HagaSa23aMIPS {
         int res = Memory[PC];
         PC++;
         System.out.println( "At Fetch Stage : Instruction "+ PC);
-        System.out.println("  Output : "+ res);
+        System.out.println("   PC is incremented to "+PC);
+        System.out.println("   Output : "+ res);
         return res;
     }
 
@@ -358,7 +357,7 @@ public class HagaSa23aMIPS {
         int valueR3;
         int immediate;
         int address;
-        boolean RegDst; //todo not used I think in our architecture delete it
+
         boolean ALUSrc ;
         boolean RegWrite;
         boolean MemRead;
