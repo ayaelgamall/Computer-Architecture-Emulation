@@ -199,7 +199,7 @@ public class HagaSa23aMIPS {
         if(i.Branch && !zeroFlag){
             pw.println("   Branch Instruction");
             pw.print("   PC value changed from "+ PC );
-            PC = i.pc + i.ALUOutput;
+            PC = i.pc + i.immediate+1;
             pw.println(" to "+ PC +"\n");
             return true;
         }
@@ -230,8 +230,7 @@ public class HagaSa23aMIPS {
                 break;
             case 3: i.ALUOutput = i.valueR2 + i.immediate;//ADD imm
                 break;
-            case 4: zeroFlag = (0 == (i.valueR2 - i.valueR1));
-                    i.ALUOutput = i.immediate-1; //bne //new code
+            case 4: i.ALUOutput = i.valueR2 - i.valueR1; //bne
                 break;
             case 5: i.ALUOutput = i.valueR2 & i.immediate;//AND imm
                 break;
@@ -249,6 +248,7 @@ public class HagaSa23aMIPS {
                 break;
             default:
         }
+        zeroFlag = (0 == i.ALUOutput);
         execute=false;
 
         pw.println("   Outputs: "+i.ALUOutput+", Zero Flag="+zeroFlag);
