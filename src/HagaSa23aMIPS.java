@@ -15,8 +15,8 @@ public class HagaSa23aMIPS {
 //    static ArrayList<Integer>a;
 
     public static void main (String[] args) throws FileNotFoundException {
-        pw = new PrintWriter("NormalPrinting.txt");
-        Assembler("Normal");
+        pw = new PrintWriter("branchFarPrinting.txt");
+        Assembler("branchFarNext");
         runProgram();
         pw.flush();
         pw.close();
@@ -60,7 +60,10 @@ public class HagaSa23aMIPS {
             case "BNE" : output.append("0100"); immediate=true;break ;
             case "ANDI" : output.append("0101");immediate=true; break ;
             case "ORI" : output.append("0110"); immediate=true;break ;
-            case "J" : output.append("0111"); output.append(String.format("%28s", Integer.toBinaryString(Integer.parseInt(x[1]))).replaceAll(" ", "0"));return output.toString() ;
+            case "J" : output.append("0111");
+            output.append(String.format("%28s", Integer.toBinaryString(Integer.parseInt(x[1])))
+                    .replaceAll(" ", "0"));
+            return output.toString() ;
             case "SLL" : output.append("1000"); sll=true; break ;
             case "SRL" : output.append("1001");sll=true; break ;
             case "LW" : output.append("1010");immediate=true; break ;
@@ -227,7 +230,8 @@ public class HagaSa23aMIPS {
                 break;
             case 3: i.ALUOutput = i.valueR2 + i.immediate;//ADD imm
                 break;
-            case 4: zeroFlag = (0 == (i.valueR2 - i.valueR1));//bne
+            case 4: zeroFlag = (0 == (i.valueR2 - i.valueR1));
+                    i.ALUOutput = i.immediate-1; //bne //new code
                 break;
             case 5: i.ALUOutput = i.valueR2 & i.immediate;//AND imm
                 break;
