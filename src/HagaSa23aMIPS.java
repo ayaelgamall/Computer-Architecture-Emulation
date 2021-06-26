@@ -15,8 +15,8 @@ public class HagaSa23aMIPS {
 //    static ArrayList<Integer>a;
 
     public static void main (String[] args) throws FileNotFoundException {
-        pw = new PrintWriter("branchFarPrinting.txt");
-        Assembler("branchFarNext");
+        pw = new PrintWriter("JumpPrinting.txt");
+        Assembler("Jump");
         runProgram();
         pw.flush();
         pw.close();
@@ -108,8 +108,8 @@ public class HagaSa23aMIPS {
         Instruction toMemory = null;
         Instruction toWB = null;
 //        int limit = 7 + (programLength-1)*2;
-        for (int cycle=1 ; ; cycle++)
-        {boolean Jump = false;
+        for (int cycle=1 ; ; cycle++) {
+            boolean Jump = false;
             pw.println("Clock Cycle : "+cycle+"\n");
             if(odd)
              if(writeBack(toWB)) break;
@@ -137,13 +137,12 @@ public class HagaSa23aMIPS {
 
         pw.println("The Stages are finished\n");
         pw.println("The Registers Content is :\n" +printReg());
-        pw.println("\nThe Memory Content is :");
-        printMem();
+        pw.println("\nThe Memory Content is :");printMem();
     }
 
     private static void printMem() {
         for (int i = 0; i < Memory.length; i++) {
-            pw.println("Index "+i +" = "+Memory[i]);
+            if(Memory[i]!=0) pw.println("Index "+i +" = "+Memory[i]);continue;
         }
     }
 
@@ -173,7 +172,7 @@ public class HagaSa23aMIPS {
     private static boolean writeBack(Instruction i) {
         if(i==null) return false;
         pw.println("At Write Back Stage : Instruction "+i.pc +i.binary);
-        pw.println("   Inputs: RegWrite="+i.RegWrite + " , MemToReg="+i.MemtoReg+" , DataFromMemory ="+i.valueLW +" ,Data From ALU= " +i.ALUOutput + " ,WriteReg ="+ i.r1  );
+        pw.println("   Inputs: RegWrite="+i.RegWrite + " , MemToReg="+i.MemtoReg+" , DataFromMemory ="+i.valueLW +" ,Data From ALU= " +i.ALUOutput + " ,WriteReg ="+ i.r1 +"last"+i.last );
 
         if(i.RegWrite){
             pw.print("    Register R" +i.r1+ " has changed from : "+Registers[i.r1]);
@@ -183,7 +182,7 @@ public class HagaSa23aMIPS {
 
         }
        pw.println();
-        if(i.pc==programLength)return true;
+        if(i.pc==programLength||i.last)return true;
 
         return false;
     }
@@ -208,6 +207,7 @@ public class HagaSa23aMIPS {
             pw.println("   Address="+i.address);
             pw.print("   PC value changed from "+ PC );
             PC = i.address;
+            if(i.address>=programLength)i.last=true;
             pw.println(" to "+ PC +"\n");
             return true;
         }
@@ -382,6 +382,7 @@ public class HagaSa23aMIPS {
         boolean Jump;
         int ALUOutput;
         int valueLW;
+        boolean last;
 
         public Instruction(int opcode, int shamt, int r1, int r2, int r3, int immediate, int address, int valueR1, int valueR2, int valueR3, String s) {
             this.opcode = opcode;
@@ -395,7 +396,7 @@ public class HagaSa23aMIPS {
             this.valueR1=valueR1;
             this.valueR3=valueR3;
             this.binary=s;
-
+            this.last=false;
         }
     }
 
