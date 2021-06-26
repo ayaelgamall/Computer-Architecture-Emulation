@@ -15,8 +15,8 @@ public class HagaSa23aMIPS {
 //    static ArrayList<Integer>a;
 
     public static void main (String[] args) throws FileNotFoundException {
-        pw = new PrintWriter("infinitePrinting.txt");
-        Assembler("infiniteLoop");
+        pw = new PrintWriter("Infinite.txt");
+        Assembler("InfiniteLoop");
         runProgram();
         pw.flush();
         pw.close();
@@ -111,6 +111,7 @@ public class HagaSa23aMIPS {
         for (int cycle=1 ; ; cycle++) {
             boolean Jump = false;
             pw.println("Clock Cycle : "+cycle+"\n");
+            pw.println("PC value is "+PC+"\n");
             if(odd)
              if(writeBack(toWB)) break;
             if(!odd) memory(toMemory);
@@ -172,7 +173,7 @@ public class HagaSa23aMIPS {
     private static boolean writeBack(Instruction i) {
         if(i==null) return false;
         pw.println("At Write Back Stage : Instruction "+i.pc +i.binary);
-        pw.println("   Inputs: RegWrite="+i.RegWrite + " , MemToReg="+i.MemtoReg+" , DataFromMemory ="+i.valueLW +" ,Data From ALU= " +i.ALUOutput + " ,WriteReg ="+ i.r1 +"last"+i.last );
+        pw.println("   Inputs: RegWrite="+i.RegWrite + " , MemToReg="+i.MemtoReg+" , DataFromMemory ="+i.valueLW +" ,Data From ALU= " +i.ALUOutput + " ,WriteReg ="+ i.r1 +" ,last flag ="+i.last );
 
         if(i.RegWrite){
             pw.print("    Register R" +i.r1+ " has changed from : "+Registers[i.r1]);
