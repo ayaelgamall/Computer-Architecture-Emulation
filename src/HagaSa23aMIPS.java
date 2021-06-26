@@ -15,8 +15,8 @@ public class HagaSa23aMIPS {
 //    static ArrayList<Integer>a;
 
     public static void main (String[] args) throws FileNotFoundException {
-        pw = new PrintWriter("JumpPrinting.txt");
-        Assembler("Jump");
+        pw = new PrintWriter("infinitePrinting.txt");
+        Assembler("infiniteLoop");
         runProgram();
         pw.flush();
         pw.close();
