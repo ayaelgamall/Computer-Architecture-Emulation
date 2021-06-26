@@ -199,6 +199,7 @@ public class HagaSa23aMIPS {
             pw.println("   Branch Instruction");
             pw.print("   PC value changed from "+ PC );
             PC = i.pc + i.immediate+1;
+            if(i.address>=programLength)i.last=true;
             pw.println(" to "+ PC +"\n");
             return true;
         }
