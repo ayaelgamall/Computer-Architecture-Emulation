@@ -182,7 +182,7 @@ public class HagaSa23aMIPS {
 
         }
        pw.println();
-        if(i.pc==programLength||i.last)return true;
+        if(i.last)return true;
 
         return false;
     }
@@ -198,7 +198,7 @@ public class HagaSa23aMIPS {
         if(i.Branch && !zeroFlag){
             pw.println("   Branch Instruction");
             PC = i.pc + i.immediate;
-            if(i.address>=programLength)i.last=true;
+            if(PC>=programLength)i.last=true;
             else i.last=false;
             pw.println("  PC value changed to "+ PC +"\n");
             return true;
@@ -397,7 +397,7 @@ public class HagaSa23aMIPS {
             this.valueR1=valueR1;
             this.valueR3=valueR3;
             this.binary=s;
-            this.last=false;
+            if(PC==programLength)this.last=true;
         }
     }
 
