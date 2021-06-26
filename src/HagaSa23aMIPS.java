@@ -197,10 +197,9 @@ public class HagaSa23aMIPS {
 
         if(i.Branch && !zeroFlag){
             pw.println("   Branch Instruction");
-            pw.print("   PC value changed from "+ PC );
-            PC = i.pc + i.immediate+1;
+            PC = i.pc + i.immediate;
             if(i.address>=programLength)i.last=true;
-            pw.println(" to "+ PC +"\n");
+            pw.println("  PC value changed to "+ PC +"\n");
             return true;
         }
         if (i.Jump){
@@ -316,11 +315,11 @@ public class HagaSa23aMIPS {
 
         if(opcode<0) opcode= (int) ((2 * (long) Integer.MAX_VALUE + 2 + opcode) >>28);
         else opcode = opcode >> 28 ;
-        if (opcode!=10&&opcode!=11) {
-            if (String.format("%18s", Integer.toBinaryString(imm).replaceAll(" ", "0")).charAt(0)=='1') {
-                    imm= (int)Long.parseLong(String.format("%14s", Integer.toBinaryString(1)).replaceAll(" ", "1")+String.format("%18s", Integer.toBinaryString(imm).replaceAll(" ", "0")),2);
-                }
-        }
+
+        if (String.format("%18s", Integer.toBinaryString(imm).replaceAll(" ", "0")).charAt(0)=='1') {
+                imm= (int)Long.parseLong(String.format("%14s", Integer.toBinaryString(1)).replaceAll(" ", "1")+String.format("%18s", Integer.toBinaryString(imm).replaceAll(" ", "0")),2);
+            }
+
 //        if (a.contains(instruction)) {
 //            imm*=-1;
 //        }
