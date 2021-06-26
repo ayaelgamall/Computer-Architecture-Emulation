@@ -83,7 +83,9 @@ public class HagaSa23aMIPS {
         else {
             if (sll) {
                 output.append("00000");
-                output.append(String.format("%13s", Integer.toBinaryString(Integer.parseInt(x[3]))).replaceAll(" ", "0"));
+                String immed =String.format("%18s", Integer.toBinaryString(Integer.parseInt(x[3]))).replaceAll(" ", "0");
+                immed=immed.substring(immed.length()-18);
+                output.append(immed);
 //                if (Integer.parseInt(x[3])<0){
 //                    a.add((int)Long.parseLong(output.toString()));
 //                }
