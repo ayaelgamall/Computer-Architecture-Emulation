@@ -115,16 +115,16 @@ public class HagaSa23aMIPS {
              if(writeBack(toWB)) break;
             if(!odd) memory(toMemory);
             toWB = toMemory;toMemory=null;
+            int instr= odd ?  fetch():-1 ;
             if(execute) execute1(toBeExcuted);
             else{
-               Jump =execute2(toBeExcuted);
+                Jump =execute2(toBeExcuted);
                 toMemory=toBeExcuted;
                 toBeExcuted=null;
             }
             if(decode) toBeDecoded=decode1(instruction);
             else{decode2(toBeDecoded);toBeExcuted=toBeDecoded;}
-
-            instruction= odd ?  fetch():-1 ;
+            instruction=instr;
             odd =!odd;
             if(Jump){
                 instruction=-1;
